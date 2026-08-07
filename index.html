@@ -278,36 +278,16 @@ section.tight{padding:72px 0;}
 .product-tile:hover .product-tile-cta svg{transform:translateX(3px);}
 
 /* ============================================================
-   LISTING FLOW — items check, protection, condition, kit, add product
+   LISTING FLOW — single "list once" moment
 ============================================================ */
-.flow-row{position:relative;display:grid;grid-template-columns:repeat(5,1fr);gap:16px;align-items:stretch;}
-.flow-row::before{content:'';position:absolute;top:29px;left:3%;right:3%;height:2px;background:repeating-linear-gradient(90deg, var(--line) 0 8px, transparent 8px 14px);z-index:0;}
-.flow-step{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;background:#fff;border:1px solid var(--line);border-radius:18px;padding:20px 16px;text-align:center;transition:.2s;}
-.flow-step:hover{transform:translateY(-4px);box-shadow:var(--shadow-md);border-color:var(--p250);}
-.flow-icon{width:58px;height:58px;border-radius:16px;background:var(--p100);color:var(--p600);display:flex;align-items:center;justify-content:center;margin:0 auto;position:relative;box-shadow:0 4px 14px rgba(3,13,49,.06);}
-.flow-icon svg{width:26px;height:26px;}
-.flow-num{position:absolute;top:-8px;right:-8px;width:22px;height:22px;border-radius:50%;background:var(--ink);color:#fff;font-family:var(--mono);font-size:10.5px;font-weight:700;display:flex;align-items:center;justify-content:center;}
-.flow-step h4{font-size:14.5px;margin-top:16px;}
-.flow-step p{font-size:12.5px;color:var(--gray-600);margin-top:7px;line-height:1.5;flex-grow:1;}
-.flow-step.kit{border-color:var(--s600);background:linear-gradient(180deg,#fff 0%, var(--s100) 130%);}
-.flow-step.kit .flow-icon{background:var(--s500);color:var(--ink);}
-
-
-.flow-done{margin-top:22px;display:flex;align-items:center;justify-content:center;gap:12px;background:var(--ink);border-radius:99px;padding:16px 28px;max-width:640px;margin-left:auto;margin-right:auto;text-align:center;}
-.flow-done svg{width:19px;height:19px;color:var(--s500);flex-shrink:0;}
-.flow-done span{font-size:14px;font-weight:700;color:#fff;}
-
-@media (max-width:900px){
-  .flow-row{grid-template-columns:1fr;gap:0;}
-  .flow-row::before{display:none;}
-  .flow-step{display:flex;flex-direction:row;align-items:center;gap:16px;text-align:left;padding:16px 4px;border:none;border-bottom:1px solid var(--line);border-radius:0;background:transparent;}
-  .flow-step:hover{transform:none;box-shadow:none;}
-  .flow-step.kit{background:var(--s100);border-radius:16px;border-bottom:none;padding:16px;margin:4px 0;}
-  .flow-icon{margin:0;flex-shrink:0;}
-  .flow-step h4{margin-top:0;}
-  .flow-step p{flex-grow:0;}
-}
-@media (max-width:640px){ .flow-row{grid-template-columns:1fr;} }
+.list-once{display:flex;flex-direction:column;align-items:center;gap:18px;text-align:center;max-width:520px;margin:0 auto;}
+.list-once-row{display:flex;align-items:center;justify-content:center;gap:22px;}
+.list-once-item{display:flex;flex-direction:column;align-items:center;gap:10px;}
+.list-once-icon{width:54px;height:54px;border-radius:16px;background:var(--p100);color:var(--p600);display:flex;align-items:center;justify-content:center;}
+.list-once-icon svg{width:24px;height:24px;}
+.list-once-item span{font-size:13px;font-weight:700;color:var(--gray-700);}
+.list-once-plus{font-size:18px;font-weight:700;color:var(--gray-300);}
+.list-once p{font-size:16px;font-weight:700;color:var(--ink);line-height:1.5;}
 
 
 /* ============================================================
@@ -627,13 +607,13 @@ section.tight{padding:72px 0;}
       <h1 class="mt-8">List it. Rent it.<br><span class="hl">Earn on every order.</span></h1>
       <p class="hero-sub">Rent your gear out through SharePal and earn on every order. You pack it, we ship it to the renter, and once the order's complete, we bring it back to you — no limit on what you can earn.</p>
       <div class="hero-ctas">
-        <a href="#categories" class="btn btn-primary">List Your Gear</a>
+        <a href="#categories" class="btn btn-primary">Rent Your Gear</a>
         <a href="#how-it-works" class="btn btn-ghost-light">See how it works</a>
       </div>
       <div class="hero-trust">
         <div class="hero-trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span>100% protection</span></div>
-        <div class="hero-trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span>Listing live within a day</span></div>
-        <div class="hero-trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span>Payout settled monthly, straight to your bank</span></div>
+        <div class="hero-trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span>Flexible rental</span></div>
+        <div class="hero-trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span>Monthly payout</span></div>
       </div>
     </div>
     <div class="hero-visual">
@@ -698,6 +678,67 @@ section.tight{padding:72px 0;}
 </section>
 
 <!-- ============================================================
+     WHY CHOOSE US
+============================================================ -->
+<section id="why-us">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow on-mist"><span class="eyebrow-dot"></span>Why people choose SharePal</span>
+      <h2>Your Gear, Our Trust.</h2>
+      <p>Every reason comes back to one thing — this stays your asset, on your terms, the whole way through.</p>
+    </div>
+    <div class="why-grid">
+      <div class="why-card featured">
+        <div class="why-featured-top">
+          <div class="why-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg></div>
+          <h4>Idle gear, active income</h4>
+          <p>That camera, console or drone sitting unused? List it once and it starts earning — no extra heavy investment needed, you already own the asset.</p>
+        </div>
+        <div class="why-stat"><b>₹15,000+</b><span>avg. monthly earning potential</span></div>
+      </div>
+      <div class="why-card">
+        <div class="why-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v6c0 4.5-3 8-7 9-4-1-7-4.5-7-9V6z"/><path d="M9 12l2 2 4-4"/></svg></div>
+        <h4>100% protected</h4>
+        <p>Your protection plan covers 100% of your gear — damage gets repaired, and if it can't be, it's replaced. You'll never bear the loss.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V8a5 5 0 0110 0v3"/></svg></div>
+        <h4>It's still yours</h4>
+        <p>Ownership never changes hands. Your gear stays registered to you, order after order.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a8 8 0 0116 0v1"/></svg></div>
+        <h4>Rental flexibility</h4>
+        <p>You can also use it for your own purposes, hassle-free. Just block out availability dates, and orders will pause for that period.</p>
+      </div>
+      <div class="why-card trust">
+        <div class="why-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v6c0 4.5-3 8-7 9-4-1-7-4.5-7-9V6z"/><path d="M9 12l2 2 4-4"/></svg></div>
+        <h4>Backed by SharePal</h4>
+        <p>A rental platform renters already trust — you're plugging into an established name, not starting from zero.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     HOW IT WORKS (onboarding)
+============================================================ -->
+<section class="bg-mist" id="how-it-works">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow on-mist"><span class="eyebrow-dot"></span>How it works</span>
+      <h2>List. Fulfil. Earn.</h2>
+      <p>The whole programme, start to finish.</p>
+    </div>
+    <div class="steps-row">
+      <div class="step-card reveal"><div class="step-num mono">01</div><h4>List your gear</h4><p>Pick your category and product, complete the listing, and you're ready to receive orders.</p></div>
+      <div class="step-card reveal"><div class="step-num mono">02</div><h4>Fulfil orders from dashboard</h4><p>Every order shows up in your dashboard. Pack and hand over when it's booked, then collect and inspect when it's back — we handle everything in between.</p></div>
+      <div class="step-card final reveal"><div class="step-num mono">03</div><h4>Earn per order, paid monthly</h4><p>Your share is added to every completed order, and settles straight to your bank each month.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
      LISTING FLOW — items check, protection, condition, kit, add product
 ============================================================ -->
 <section id="listing-flow">
@@ -705,38 +746,21 @@ section.tight{padding:72px 0;}
     <div class="section-head">
       <span class="eyebrow"><span class="eyebrow-dot"></span>Listing your first gear</span>
       <h2>One listing. Endless earning.</h2>
-      <p>Any product — camera, drone or gaming console — goes through very simple listing process.</p>
+      <p>Start listing your idle asset — and start earning.</p>
     </div>
-    <div class="flow-row">
-      <div class="flow-step">
-        <div class="flow-icon"><span class="flow-num">1</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></div>
-        <h4>Items check</h4>
-        <p>We check that every accessory is accounted for, so nothing's missing when it's time to list.</p>
+    <div class="list-once">
+      <div class="list-once-row">
+        <div class="list-once-item">
+          <div class="list-once-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7l2-4h14l2 4"/><rect x="3" y="7" width="18" height="14" rx="2"/><path d="M8 11h8M8 15h5"/></svg></div>
+          <span>List your product</span>
+        </div>
+        <div class="list-once-plus">+</div>
+        <div class="list-once-item">
+          <div class="list-once-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8V6a4 4 0 018 0v2"/><rect x="4" y="8" width="12" height="12" rx="2"/><path d="M17 12l3-1.5V17l-3-1.5"/></svg></div>
+          <span>Get your packing kit</span>
+        </div>
       </div>
-      <div class="flow-step">
-        <div class="flow-icon"><span class="flow-num">2</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v6c0 4.5-3 8-7 9-4-1-7-4.5-7-9V6z"/></svg></div>
-        <h4>Protection plan</h4>
-        <p>A quick, optional choice for this listing — pick one in a tap, change it anytime.</p>
-      </div>
-      <div class="flow-step">
-        <div class="flow-icon"><span class="flow-num">3</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="12" cy="12" r="3.2"/><path d="M8 3l1.5 2h5L16 3"/></svg></div>
-        <h4>Condition check</h4>
-        <p>You upload photos of your gear's current condition — we review them and log your starting record.</p>
-      </div>
-      <div class="flow-step kit">
-        <div class="flow-icon"><span class="flow-num">4</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8V6a4 4 0 018 0v2"/><rect x="4" y="8" width="12" height="12" rx="2"/><path d="M17 12l3-1.5V17l-3-1.5"/></svg></div>
-        <h4>Get your packing kit</h4>
-        <p>A delivery bag and lock, delivered to you — so your gear travels safe on every pickup and drop-off.</p>
-      </div>
-      <div class="flow-step">
-        <div class="flow-icon"><span class="flow-num">5</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7l2-4h14l2 4"/><rect x="3" y="7" width="18" height="14" rx="2"/><path d="M8 11h8M8 15h5"/></svg></div>
-        <h4>Product addition</h4>
-        <p>Add your gear's serial number — the last step before it's live.</p>
-      </div>
-    </div>
-    <div class="flow-done">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
-      <span>Finish this, and your listing is ready to start earning</span>
+      <p>That's it — you're ready to start earning.</p>
     </div>
   </div>
 </section>
@@ -918,77 +942,14 @@ section.tight{padding:72px 0;}
   </div>
 </section>
 
-
-<!-- ============================================================
-     HOW IT WORKS (onboarding)
-============================================================ -->
-<section class="bg-mist" id="how-it-works">
-  <div class="wrap">
-    <div class="section-head">
-      <span class="eyebrow on-mist"><span class="eyebrow-dot"></span>How it works</span>
-      <h2>List. Fulfil. Earn.</h2>
-      <p>The whole programme, start to finish.</p>
-    </div>
-    <div class="steps-row">
-      <div class="step-card reveal"><div class="step-num mono">01</div><h4>List your gear</h4><p>Pick your category and product, complete the listing, and you're ready to receive orders.</p></div>
-      <div class="step-card reveal"><div class="step-num mono">02</div><h4>Fulfil orders from dashboard</h4><p>Every order shows up in your dashboard. Pack and hand over when it's booked, then collect and inspect when it's back — we handle everything in between.</p></div>
-      <div class="step-card final reveal"><div class="step-num mono">03</div><h4>Earn per order, paid monthly</h4><p>Your share is added to every completed order, and settles straight to your bank each month.</p></div>
-    </div>
-  </div>
-</section>
-
 <div class="section-divider">
   <div class="wrap">
     <div class="section-divider-line"></div>
     <div class="section-divider-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M19 12l-7 7-7-7"/></svg></div>
-    <span>That's the whole process — here's why it's worth doing</span>
+    <span>That's everything running — here's what contributors say</span>
     <div class="section-divider-line right"></div>
   </div>
 </div>
-
-<!-- ============================================================
-     WHY CHOOSE US
-============================================================ -->
-<section class="bg-mist" id="why-us">
-  <div class="wrap">
-    <div class="section-head">
-      <span class="eyebrow on-mist"><span class="eyebrow-dot"></span>Why people choose SharePal</span>
-      <h2>Your Gear, Our Trust.</h2>
-      <p>Every reason comes back to one thing — this stays your asset, on your terms, the whole way through.</p>
-    </div>
-    <div class="why-grid">
-      <div class="why-card featured">
-        <div class="why-featured-top">
-          <div class="why-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg></div>
-          <h4>Idle gear, active income</h4>
-          <p>That camera, console or drone sitting unused? List it once and it starts earning — no extra heavy investment needed, you already own the asset.</p>
-        </div>
-        <div class="why-stat"><b>₹15,000+</b><span>avg. monthly earning potential</span></div>
-      </div>
-      <div class="why-card">
-        <div class="why-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v6c0 4.5-3 8-7 9-4-1-7-4.5-7-9V6z"/><path d="M9 12l2 2 4-4"/></svg></div>
-        <h4>100% protected</h4>
-        <p>Your protection plan covers 100% of your gear — damage gets repaired, and if it can't be, it's replaced. You'll never bear the loss.</p>
-      </div>
-      <div class="why-card">
-        <div class="why-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V8a5 5 0 0110 0v3"/></svg></div>
-        <h4>It's still yours</h4>
-        <p>Ownership never changes hands. Your gear stays registered to you, order after order.</p>
-      </div>
-      <div class="why-card">
-        <div class="why-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a8 8 0 0116 0v1"/></svg></div>
-        <h4>Order flexibility</h4>
-        <p>You can also use it for your own purposes, hassle-free. Just block out availability dates, and orders will pause for that period.</p>
-      </div>
-      <div class="why-card trust">
-        <div class="why-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v6c0 4.5-3 8-7 9-4-1-7-4.5-7-9V6z"/><path d="M9 12l2 2 4-4"/></svg></div>
-        <h4>Backed by SharePal</h4>
-        <p>A rental platform renters already trust — you're plugging into an established name, not starting from zero.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
 
 <!-- ============================================================
      TESTIMONIALS
