@@ -1598,12 +1598,58 @@ function wrapForSync(names){
 /* ============================================================
    ROUTER
 ============================================================ */
+/* ============================================================
+   ROUTING — real paths, e.g. /app/mylisting/products/ps5
+   Requires a server rewrite so every /app/* path serves this file
+   (see vercel.json). Without one it degrades to #/app/... hash URLs.
+============================================================ */
+const USE_PATH_ROUTING = (function(){
+  try {
+    return !!(window.history && history.pushState)
+        && location.protocol !== 'file:'
+        && !/\.html?$/i.test(location.pathname);   // /app.html = no rewrite
+  } catch(e){ return false; }
+})();
+const ROUTE_BASE = '';
+
+function currentPath(){
+  /* The pathname is authoritative when clean URLs are on. Checking the hash
+     first would make a stale #/app/... left over from an earlier link win
+     over a fresh pushState, pinning the app on the previous screen. */
+  if(USE_PATH_ROUTING){
+    let p = location.pathname;
+    if(ROUTE_BASE && p.indexOf(ROUTE_BASE) === 0) p = p.slice(ROUTE_BASE.length);
+    p = p.replace(/\/+$/, '');
+    if(p.indexOf('/app') === 0) return p;
+  }
+  const h = location.hash.slice(1);                // legacy #/app/... link
+  if(h.indexOf('/app') === 0) return h;
+  return '/app/overview';
+}
 function navigate(path){
-  if(location.hash.slice(1) === path){ router(); } // force re-render even if same route
+  if(currentPath() === path){ router(); return; }
+  if(USE_PATH_ROUTING){
+    try { history.pushState(null, '', ROUTE_BASE + path); router(); return; }
+    catch(e){ /* fall through to hash */ }
+  }
   location.hash = '#' + path;
 }
+window.addEventListener('popstate', function(){ router(); });
+
+/* Rewrite the address bar once at boot: upgrade a legacy #/app/... link to a
+   clean path, or fall back to a hash URL when no rewrite is configured. */
+function normaliseUrl(force){
+  const target = force || currentPath();
+  try {
+    if(USE_PATH_ROUTING) history.replaceState(null, '', ROUTE_BASE + target);
+    else                 history.replaceState(null, '', '#' + target);
+  } catch(e){
+    if(!USE_PATH_ROUTING) location.hash = '#' + target;
+  }
+}
+
 function router(){
-  let path = location.hash.slice(1) || '/app/overview';
+  let path = currentPath();
   const segs = path.split('/').filter(Boolean);
   const isApp = segs[0] === 'app';
 
@@ -1693,9 +1739,9 @@ window.addEventListener('DOMContentLoaded', async function(){
       const m = decodeURIComponent((rawHash.match(/error_description=([^&]+)/) || [,''])[1]).replace(/\+/g,' ');
       toast(m || 'That sign-in link is invalid or has expired');
     }
-    try{ history.replaceState(null, '', '#/app/overview'); }catch(e){ location.hash = '#/app/overview'; }
-  } else if(!location.hash){
-    try{ history.replaceState(null, '', '#/app/overview'); }catch(e){ location.hash = '#/app/overview'; }
+    normaliseUrl('/app/overview');          // drop the token hash
+  } else {
+    normaliseUrl(null);                     // keep the route we arrived on
   }
 
   if(DB.on){
