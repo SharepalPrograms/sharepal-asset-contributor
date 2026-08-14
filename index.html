@@ -597,12 +597,13 @@ section.tight{padding:72px 0;}
 const SUPABASE_URL      = 'https://ijjwtiugzkvmfqupbirh.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imlqand0aXVnemt2bWZxdXBiaXJoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY3MDAyNTAsImV4cCI6MjEwMjI3NjI1MH0.W98cT1VFqnGtqy6iZZObhE7b7YVQUavM1rlewKGnxaE';
 
-/* Where the partner app lives, relative to this page. Must match the real
-   filename in the repo. Same origin keeps the Supabase session shared, so a
-   contributor who signs in here is already signed in there.
-   Vercel also serves it at /app (extension stripped); './app.html' works
-   from both '/' and '/index.html'. */
-const APP_URL = './app.html';
+/* Where the partner app lives. With the rewrite in vercel.json every
+   /app/* path serves app.html, so we can link to clean URLs like
+   /app/mylisting/products/ps5 instead of app.html#/app/...
+   Set APP_CLEAN_URLS to false to fall back to hash links. */
+const APP_CLEAN_URLS = true;
+const APP_URL  = './app.html';        // used only when APP_CLEAN_URLS is false
+const APP_BASE = '/app';              // used when APP_CLEAN_URLS is true
 </script>
 </head>
 <body>
@@ -1269,23 +1270,23 @@ let pendingFamily = null, pendingName = null;
 
 /* Split out so the destination can be asserted without navigating */
 function appUrlFor(familyKey){
-  return familyKey
-    ? APP_URL + '#/app/mylisting/products/' + familyKey
-    : APP_URL + '#/app/overview';
+  const route = familyKey ? '/mylisting/products/' + familyKey : '/overview';
+  return APP_CLEAN_URLS ? (APP_BASE + route)
+                        : (APP_URL + '#/app' + route);
 }
 function goToAppHome(){ goToApp(null); }
 function goToApp(familyKey){
   const url = appUrlFor(familyKey || null);
   /* A 404 here means APP_URL does not match the deployed filename. Check the
      app file exists before navigating so the failure is legible. */
-  fetch(APP_URL, {method:'HEAD'})
+  fetch(APP_CLEAN_URLS ? APP_BASE + '/overview' : APP_URL, {method:'HEAD'})
     .then(function(r){
       if(!r.ok) throw new Error(r.status);
       window.location.href = url;
     })
     .catch(function(){
-      showToast('Could not open the partner app \u2014 check APP_URL (' + APP_URL + ')');
-      console.error('APP_URL not reachable:', APP_URL);
+      showToast('Could not open the partner app \u2014 check the /app rewrite in vercel.json');
+      console.error('App route not reachable. Is vercel.json deployed?', appUrlFor(null));
     });
 }
 async function startListing(familyKey, productName){
