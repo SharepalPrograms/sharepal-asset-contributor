@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SharePal — Partner App</title>
+<title>SharePal — Contributor App</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&family=Ubuntu:wght@500;700&family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -31,7 +31,7 @@ const AUTH_MODE = 'password';
 </script>
 <style>
 /* ============================================================
-   SHAREPAL PARTNER APP — Brand Kit 2.0 design system
+   SHAREPAL CONTRIBUTOR APP — Brand Kit 2.0 design system
    Ubuntu + Hanken Grotesk · Ink navy · Indigo · Lime
 ============================================================ */
 :root{
@@ -509,6 +509,15 @@ input,select,textarea{font-family:inherit;}
   .otp-box{max-width:none;height:54px;font-size:20px;}
 }
 
+/* On narrow screens the thumb, name, badge and button cannot share one line —
+   the name gets squeezed to a few characters wide and breaks mid-word.
+   Let the row wrap so the name keeps full width and the controls drop below. */
+@media (max-width: 560px){
+  .asset-row, .order-row{flex-wrap:wrap;}
+  .asset-row > .flex-label, .order-row > .flex-label{flex:1 1 100%;order:3;min-width:100%;}
+  .asset-row > .badge, .order-row > .badge{order:4;}
+  .asset-row > .btn, .order-row > .btn{order:5;margin-left:auto;}
+}
 @media (max-width: 480px){
   .grid-2, .grid-3, .grid-4{grid-template-columns:1fr;}
   .step-title{font-size:21px;}
@@ -728,6 +737,26 @@ input,select,textarea{font-family:inherit;}
 @media (max-width:860px){
   .rp-media{width:100%;height:150px;border-radius:14px;}
 }
+
+/* ============ search bar ============ */
+.searchbar{position:relative;margin-bottom:18px;}
+.searchbar input{width:100%;padding:13px 40px 13px 42px;border-radius:12px;
+  border:1.5px solid var(--gray-200);background:#fff;font-size:14.5px;
+  font-family:inherit;color:var(--ink);box-sizing:border-box;}
+.searchbar input:focus{outline:none;border-color:var(--p500);box-shadow:0 0 0 3px rgba(25,68,232,.11);}
+.searchbar input::placeholder{color:var(--gray-400);}
+/* type="search" gives mobile keyboards a Search key, but WebKit also draws its
+   own clear button — hide it so ours is the only one. */
+.searchbar input::-webkit-search-cancel-button,
+.searchbar input::-webkit-search-decoration{-webkit-appearance:none;appearance:none;}
+.searchbar .sb-ico{position:absolute;left:14px;top:50%;transform:translateY(-50%);
+  width:17px;height:17px;color:var(--gray-400);pointer-events:none;}
+.searchbar .sb-clear{position:absolute;right:11px;top:50%;transform:translateY(-50%);
+  width:22px;height:22px;border-radius:50%;border:none;background:var(--gray-100);
+  color:var(--gray-600);cursor:pointer;display:none;align-items:center;justify-content:center;padding:0;}
+.searchbar .sb-clear.on{display:flex;}
+.searchbar .sb-clear:hover{background:var(--gray-200);}
+.search-count{font-size:12.5px;color:var(--gray-500);margin:-8px 0 14px 2px;font-weight:600;}
 </style>
 </head>
 <body>
@@ -742,7 +771,7 @@ input,select,textarea{font-family:inherit;}
       <span class="brand-mark"><svg viewBox="0 0 24 24" fill="none" stroke="#030D31" stroke-width="2.4" stroke-linecap="round" style="width:17px;height:17px;"><path d="M4 12h16M12 4v16"/></svg></span>
       <span class="rail-brand-name">SharePal</span>
     </div>
-    <div class="rail-section-label">Partner <span id="db-badge" style="float:right;font-size:9px;padding:2px 7px;border-radius:99px;letter-spacing:0;text-transform:none;font-weight:700;"></span></div>
+    <div class="rail-section-label">Contributor <span id="db-badge" style="float:right;font-size:9px;padding:2px 7px;border-radius:99px;letter-spacing:0;text-transform:none;font-weight:700;"></span></div>
     <div class="rail-nav" id="appshell-nav"></div>
     <div class="rail-foot appshell-account" onclick="navigate('/app/menu')">
       <div class="appshell-avatar" id="appshell-avatar">?</div>
@@ -799,7 +828,7 @@ input,select,textarea{font-family:inherit;}
         <p class="hint">New here? We'll create your account automatically.</p>
       </div>
       <button class="btn btn-primary btn-block btn-lg" id="auth-send-btn" onclick="sendOtp()">Send OTP</button>
-      <p class="small muted mt-16" style="text-align:center;">By continuing you agree to SharePal's <span class="link">Partner Terms</span> and <span class="link">Privacy Policy</span>.</p>
+      <p class="small muted mt-16" style="text-align:center;">By continuing you agree to SharePal's <span class="link">Contributor Terms</span> and <span class="link">Privacy Policy</span>.</p>
     </div>
 
     <div id="auth-otp-state" style="display:none;">
@@ -1294,7 +1323,7 @@ function showDbBanner(err){
   const code = (err && err.code) || '';
   let cause, fix;
   if(/JWT|apikey|Invalid API key/i.test(msg)){
-    cause = 'Supabase rejected the API key.';
+    cause = 'The server rejected the API key.';
     fix   = 'Re-copy the anon/public key from Settings \u2192 API.';
   } else if(code === '42501' || /row-level security|permission denied/i.test(msg)){
     cause = 'Row Level Security is blocking anonymous reads of the catalogue.';
@@ -1303,7 +1332,7 @@ function showDbBanner(err){
     cause = 'The catalogue tables are empty.';
     fix   = 'Run 02_seed_catalog.sql in the SQL Editor.';
   } else if(/Failed to fetch|NetworkError|ERR_/i.test(msg)){
-    cause = 'The browser could not reach Supabase.';
+    cause = 'The browser could not reach the live data server.';
     fix   = 'Check the project URL, your connection, and any ad-blocker.';
   } else if(/relation .* does not exist/i.test(msg)){
     cause = 'The tables do not exist yet.';
@@ -1317,7 +1346,7 @@ function showDbBanner(err){
   bar.style.cssText = 'position:fixed;left:0;right:0;top:0;z-index:2000;background:#FDECEF;'
     + 'color:#AF1E38;padding:12px 44px 12px 16px;font-size:13.5px;font-weight:600;'
     + 'font-family:var(--font-body);box-shadow:0 2px 12px rgba(3,13,49,.18);line-height:1.45;';
-  bar.innerHTML = '<b>Showing demo data \u2014 not connected to Supabase.</b><br>'
+  bar.innerHTML = '<b>Showing demo data \u2014 not connected to live data.</b><br>'
     + cause + ' <span style="font-weight:700;">Fix: ' + fix + '</span>'
     + '<span onclick="this.parentNode.remove()" style="position:absolute;top:10px;right:14px;'
     + 'cursor:pointer;font-size:18px;line-height:1;">\u00D7</span>';
@@ -1326,7 +1355,7 @@ function showDbBanner(err){
 function dbBadge(){
   const el = document.getElementById('db-badge');
   if (!el) return;
-  el.textContent = DB.on ? 'Supabase' : 'Demo data';
+  el.textContent = DB.on ? 'Live data' : 'Demo data';
   el.style.background = DB.on ? 'var(--s500)' : 'rgba(255,255,255,.12)';
   el.style.color = DB.on ? 'var(--ink)' : '#A6B0D4';
 }
@@ -1445,9 +1474,59 @@ async function loadUserData(){
   bankAdded = prof.data ? !!prof.data.bank_added : false;
 
   listings = (lst.data || []).map(rowToListing);
-  orders = [];   // orders originate SharePal-side; none seeded yet
+  await loadOrders();
 }
 
+/* ---------- orders ----------
+   Orders originate SharePal-side; the contributor only ever reads and
+   advances them. The per-item packing checklist is NOT stored per order —
+   it is rebuilt from the catalogue via buildOrder(), exactly as the demo
+   flow does, so both paths render identically. */
+async function loadOrders(){
+  const sb = DB.client;
+  const res = await sb
+    .from('orders')
+    .select('*, order_listings(listing_id)')
+    .order('created_at', { ascending: false });
+
+  if (res.error) { console.error('orders', res.error); orders = []; return; }
+
+  orders = (res.data || []).map(rowToOrder).filter(Boolean);
+}
+function rowToOrder(r){
+  /* resolve the listings this order covers; skip if none are loaded */
+  const ids = (r.order_listings || []).map(function(x){ return x.listing_id; });
+  const mine = listings.filter(function(l){ return ids.indexOf(l.dbId) > -1; });
+  if (!mine.length) {
+    console.warn('Order ' + (r.ref || r.id) + ' references no loaded listing — skipped');
+    return null;
+  }
+  const days = r.rental_duration || 0;
+  let remaining = days;
+  if (r.return_pickup_date) {
+    const ms = new Date(r.return_pickup_date).getTime() - Date.now();
+    remaining = Math.max(0, Math.ceil(ms / 86400000));
+  }
+  return buildOrder(mine, {
+    id:                r.ref || r.id,
+    status:            r.status,
+    bookedRpId:        r.product_id,
+    earnings:          Number(r.earnings) || 0,
+    rentalDuration:    days,
+    rentalDaysRemaining: remaining,
+    acceptDeadlineTs:  r.accept_deadline ? new Date(r.accept_deadline).getTime() : null,
+    declineReason:     r.decline_reason,
+    pickupDate:        r.pickup_date,
+    deliveryWindow:    r.delivery_window,
+    returnPickupDate:  r.return_pickup_date,
+    returnTimeWindow:  r.return_time_window,
+    inspectionStarted: r.inspection_started,
+    returnScheduled:   r.return_scheduled,
+    collectionDone:    r.collection_done,
+    courierBooked:     r.courier_booked,
+    payoutStatus:      r.payout_status === 'paid' ? 'Paid' : null
+  });
+}
 function rowToListing(r){
   const serials = {};
   (r.listing_items || []).forEach(function(li){
@@ -1494,7 +1573,9 @@ async function syncListing(l){
       reduced_qty: l.reducedQty || {},
       uploaded_photos: l.uploadedPhotos || [],
       video_uploaded: !!l.videoUploaded,
-      address_id: l.selectedAddressId || null,
+      /* guard: only a real uuid may go into this FK column */
+      address_id: (l.selectedAddressId && String(l.selectedAddressId).indexOf('addr') !== 0)
+                    ? l.selectedAddressId : null,
       tracking_id: l.trackingId || null,
       lock_code: l.lockCode || null,
       lock_code_revealed: !!l.lockCodeRevealed,
@@ -1509,7 +1590,12 @@ async function syncListing(l){
     await syncListingChildren(l);
   } catch (e) {
     console.error('syncListing', e);
-    toast('Could not save to server');
+    const m = (e && (e.message || e.details)) || '';
+    if (/address_id|uuid|foreign key/i.test(m)) {
+      toast('Could not save the delivery address — re-add it in Address book');
+    } else {
+      toast('Could not save to server');
+    }
   }
 }
 
@@ -1769,7 +1855,11 @@ window.addEventListener('DOMContentLoaded', async function(){
                'submitAddition','setAssetState','saveDigitalItem','removeDigitalItem',
                'addAvailabilityBlock','removeAvailabilityBlock','toggleAccessory',
                'setListingQty','selectListingPlan','markPhotoUploaded','markVideoUploaded',
-               'continueFromDelivery','revealLockCode']);
+               'continueFromDelivery','revealLockCode',
+               /* these move a listing through review and finally to 'live'.
+                  Without them the status change lived only in memory and the
+                  listing reverted to its previous step on refresh. */
+               'simulateReview1','simulateReview2','confirmUpgradeSelection']);
 
   router();
   dbBadge();
@@ -2209,6 +2299,15 @@ function listingCardHTML(l){
 /* ============================================================
    /app/mylisting — PIPELINE
 ============================================================ */
+function listingsListHTML(){
+  const list = filteredListings();
+  if(list.length === 0){
+    return search.listings
+      ? noResultsHTML('listings', 'listings')
+      : `<div class="card card-pad" style="text-align:center;padding:40px;"><p class="muted">No listings in progress yet.</p><button class="btn btn-primary mt-16" onclick="navigate('/app/mylisting/products')">Browse catalog</button></div>`;
+  }
+  return list.map(listingCardHTML).join('');
+}
 function renderMyListingPipeline(){
   const allListings = listings.filter(l=>l.addedToMyListings).sort((a,b)=>b.createdAt-a.createdAt); // newest first
   document.getElementById('route-content').innerHTML = `
@@ -2217,11 +2316,9 @@ function renderMyListingPipeline(){
       <div><h2 class="step-title" style="margin-bottom:4px;">My Listings</h2><p class="muted small">Pick up any listing right where you left off.</p></div>
       <button class="btn btn-primary" onclick="navigate('/app/mylisting/products')">+ Add new asset</button>
     </div>
-    <div id="listings-container" class="flex-col gap-16">
-      ${allListings.length===0
-        ? `<div class="card card-pad" style="text-align:center;padding:40px;"><p class="muted">No listings in progress yet.</p><button class="btn btn-primary mt-16" onclick="navigate('/app/mylisting/products')">Browse catalog</button></div>`
-        : allListings.map(listingCardHTML).join('')}
-    </div>
+    ${allListings.length ? searchBarHTML('listings', 'Search your listings by product or status') : ''}
+    <div class="search-count" id="count-listings">${searchCountHTML('listings')}</div>
+    <div id="listings-container" class="flex-col gap-16">${listingsListHTML()}</div>
   </div>`;
 }
 
@@ -2327,7 +2424,12 @@ function finishVerificationFlow(){
     const id = pendingListingId;
     pendingListingId = null;
     const l = findListing(id);
-    if(l){ l.status = 'condition-pending'; }
+    if(l){
+      l.status = 'condition-pending';
+      /* wrapForSync keys off arguments[0]; this function takes none, so
+         persist explicitly rather than silently losing the status. */
+      if(DB.on) syncListing(l);
+    }
   }
   toast('Verification complete!');
   navigate('/app/mylisting');
@@ -3153,7 +3255,7 @@ function renderMenu(){
 
     <div class="menu-list">${rowHTML}</div>
 
-    <p class="small muted mt-24" style="text-align:center;">SharePal Partner \u00B7 v2.8</p>
+    <p class="small muted mt-24" style="text-align:center;">SharePal Contributor \u00B7 v2.8</p>
   </div>`;
 }
 /* Back-compat: older links still point at the profile hub */
@@ -3331,11 +3433,11 @@ function saveAddress(){
     const custom = document.getElementById('addr-label-custom').value.trim();
     if(custom) label = custom;
   }
-  profile.addresses.push({id:'addr'+Date.now(), label, line1, line2, city, pincode, state, phone, preferredStart, preferredEnd});
+  const a = {id:'addr'+Date.now(), label, line1, line2, city, pincode, state, phone, preferredStart, preferredEnd};
+  profile.addresses.push(a);
   hideAddressForm();
-  document.getElementById('address-list').innerHTML = addressListHTML();
   showErr('addr-book-err', false);
-  toast('Address saved');
+  persistAddress(a);
 }
 const SAMPLE_ADDRESSES = [
   {label:'Home', line1:'204, Prestige Falcon Tower', line2:'Koramangala 5th Block', city:'Bengaluru', pincode:'560095', state:'Karnataka', phone:'9876543210', preferredStart:'07:00', preferredEnd:'11:00'},
@@ -3344,14 +3446,39 @@ const SAMPLE_ADDRESSES = [
 ];
 function addSampleAddress(){
   const sample = SAMPLE_ADDRESSES[profile.addresses.length % SAMPLE_ADDRESSES.length];
-  profile.addresses.push({id:'addr'+Date.now(), ...sample});
-  document.getElementById('address-list').innerHTML = addressListHTML();
+  const a = {id:'addr'+Date.now(), ...sample};
+  profile.addresses.push(a);
   showErr('addr-book-err', false);
-  toast('Sample address added');
+  persistAddress(a, 'Sample address added');
 }
-function deleteAddress(id){
+/* Writes the address and swaps its local id for the real one BEFORE the list
+   repaints. listings.address_id is a uuid FK, so a local 'addr…' id would make
+   every later listing write fail — which silently lost the checkout step. */
+async function persistAddress(a, msg){
+  if (DB.on) {
+    try { await syncAddress(a); }
+    catch(e){
+      console.error('syncAddress', e);
+      profile.addresses = profile.addresses.filter(function(x){ return x !== a; });
+      repaintAddressList();
+      toast('Could not save that address — please try again');
+      return;
+    }
+  }
+  repaintAddressList();
+  toast(msg || 'Address saved');
+}
+function repaintAddressList(){
+  const el = document.getElementById('address-list');
+  if (el) el.innerHTML = addressListHTML();
+}
+async function deleteAddress(id){
   profile.addresses = profile.addresses.filter(a=>a.id!==id);
-  document.getElementById('address-list').innerHTML = addressListHTML();
+  repaintAddressList();
+  if (DB.on && String(id).indexOf('addr') !== 0) {
+    const r = await DB.client.from('addresses').delete().eq('id', id);
+    if (r.error) console.error('deleteAddress', r.error);
+  }
 }
 
 /* ============================================================
@@ -3568,6 +3695,19 @@ function renderMyAssets(){
   <div class="wrap" style="max-width:760px;padding-top:44px;padding-bottom:100px;">
     <h2 class="step-title">My Assets</h2>
     <p class="step-desc">Your live inventory — everything currently earning on SharePal.</p>
+    ${live.length ? searchBarHTML('assets', 'Search by product, serial or QR tag') : ''}
+    <div class="search-count" id="count-assets">${searchCountHTML('assets')}</div>
+    <div id="assets-container">${assetsListHTML()}</div>
+  </div>`;
+}
+function assetsListHTML(){
+  const live = filteredAssets();
+  if(live.length === 0){
+    return search.assets
+      ? noResultsHTML('assets', 'assets')
+      : `<div class="card card-pad mt-16" style="text-align:center;padding:32px;"><p class="muted small">Assets appear here once a listing clears final review.</p></div>`;
+  }
+  return `
     ${live.map(l=>{
       const p = PRODUCTS[l.productKey];
       const rp = l.selectedRpId ? RENTAL_PRODUCTS[l.selectedRpId] : null;
@@ -3582,9 +3722,7 @@ function renderMyAssets(){
         <span class="badge ${assetStateBadge(state)}">${state}</span>
         <button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();navigate('/app/myassets/${l.id}')">View details</button>
       </div>`;
-    }).join('')}
-    ${live.length===0 ? `<div class="card card-pad mt-16" style="text-align:center;padding:32px;"><p class="muted small">Assets appear here once a listing clears final review.</p></div>` : ''}
-  </div>`;
+    }).join('')}`;
 }
 
 /* ============================================================
@@ -4071,8 +4209,9 @@ let currentOrderTab = 'all';
 const ORDER_STEP_ORDER = ['prepare','pickup','return','inspection'];
 const ORDER_STEP_LABELS = {prepare:'Prepare & Pack', pickup:'Pickup', return:'Return', inspection:'Inspection'};
 
-function createOrder(assetListings, meta){
-  orderCounter++;
+/* Builds the order object without touching global state, so both the demo
+   flow and the Supabase loader can share the exact same shape. */
+function buildOrder(assetListings, meta){
   const items = [];
   const packingDetails = {};
   const functionalityVideos = {};
@@ -4119,18 +4258,18 @@ function createOrder(assetListings, meta){
     });
   });
   const order = {
-    id: 'RP' + orderCounter,
+    id: meta.id || ('RP' + orderCounter),
     listingIds: assetListings.map(l=>l.id),
     combined: assetListings.length > 1,
-    status: 'new',
+    status: meta.status || 'new',
     rentalDuration: meta.rentalDuration,
     deliveryWindow: meta.deliveryWindow,
     pickupDate: meta.pickupDate,
     returnTimeWindow: meta.returnTimeWindow || meta.deliveryWindow,
     returnPickupDate: meta.returnPickupDate,
     earnings: meta.earnings,
-    acceptDeadlineTs: Date.now() + 20*60*1000,
-    declineReason: null,
+    acceptDeadlineTs: meta.acceptDeadlineTs || (Date.now() + 20*60*1000),
+    declineReason: meta.declineReason || null,
     items: items,
     packingDetails: packingDetails,
     editingLockCode: null,
@@ -4140,20 +4279,142 @@ function createOrder(assetListings, meta){
     deliveryPartnerName: '', deliveryPartnerNumber: '', handoverPhotoTaken: false, riderScreenPhotoTaken: false,
     scheduledPickupTimeRange: meta.scheduledPickupTimeRange || '2:00 PM - 4:00 PM',
     pickupAddressId: null, pickupTimeStart: null, pickupTimeEnd: null,
-    courierBooked: false,
-    rentalDaysRemaining: meta.rentalDuration,
-    inspectionStarted: false,
-    returnScheduled: false,
-    collectionDone: false,
+    courierBooked: !!meta.courierBooked,
+    rentalDaysRemaining: meta.rentalDaysRemaining != null ? meta.rentalDaysRemaining : meta.rentalDuration,
+    inspectionStarted: !!meta.inspectionStarted,
+    returnScheduled: !!meta.returnScheduled,
+    collectionDone: !!meta.collectionDone,
     returnPartnerName: '', returnPartnerNumber: '', collectionPhotoTaken: false,
     returnAddressId: null, returnTimeStart: null, returnTimeEnd: null,
     scheduledReturnTimeRange: meta.scheduledReturnTimeRange || '11:00 AM - 3:00 PM',
-    payoutStatus: 'Included in next monthly payout'
+    payoutStatus: meta.payoutStatus || 'Included in next monthly payout'
   };
+  return order;
+}
+function createOrder(assetListings, meta){
+  orderCounter++;
+  const order = buildOrder(assetListings, meta);
   orders.push(order);
   return order;
 }
 function findOrder(id){ return orders.find(o=>o.id===id); }
+
+/* ============================================================
+   SEARCH — one query per screen.
+
+   Typing re-renders ONLY the affected list container, never the
+   whole route. A full router() re-render would rebuild the input
+   itself and drop keyboard focus after the first character.
+============================================================ */
+const search = { assets:'', listings:'', orders:'' };
+
+function searchBarHTML(key, placeholder){
+  const q = search[key] || '';
+  return `<div class="searchbar">
+    <svg class="sb-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+    <input id="search-${key}" type="search" autocomplete="off" placeholder="${placeholder}"
+           value="${escapeAttr(q)}" oninput="onSearch('${key}', this.value)">
+    <button class="sb-clear ${q ? 'on' : ''}" id="clear-${key}" aria-label="Clear search"
+            onclick="clearSearch('${key}')">
+      <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+  </div>`;
+}
+function escapeAttr(v){
+  return String(v).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');
+}
+
+/* Normalise so "PS5", "ps 5" and "ps-5" all match the same asset */
+function normSearch(v){
+  return String(v == null ? '' : v).toLowerCase().replace(/[^a-z0-9]+/g,'');
+}
+/* Every term must appear somewhere in the haystack (AND, order-independent) */
+function matchesQuery(haystackParts, q){
+  const terms = String(q).trim().split(/\s+/).filter(Boolean).map(normSearch).filter(Boolean);
+  if(!terms.length) return true;
+  const hay = haystackParts.map(normSearch).join(' ');
+  return terms.every(function(t){ return hay.indexOf(t) > -1; });
+}
+
+function onSearch(key, val){
+  search[key] = val;
+  const clear = document.getElementById('clear-' + key);
+  if(clear) clear.classList.toggle('on', !!val);
+  refreshList(key);
+}
+function clearSearch(key){
+  search[key] = '';
+  const input = document.getElementById('search-' + key);
+  if(input) input.value = '';
+  const clear = document.getElementById('clear-' + key);
+  if(clear) clear.classList.remove('on');
+  refreshList(key);
+  if(input) input.focus();
+}
+/* Repaint just the results, keeping the search input (and its focus) alive */
+function refreshList(key){
+  if(key === 'assets')   { const c = document.getElementById('assets-container');
+                           if(c) c.innerHTML = assetsListHTML(); }
+  if(key === 'listings') { const c = document.getElementById('listings-container');
+                           if(c) c.innerHTML = listingsListHTML(); }
+  if(key === 'orders')   { const c = document.getElementById('orders-container');
+                           if(c) c.innerHTML = ordersListHTML(); startListCountdowns(); }
+  const n = document.getElementById('count-' + key);
+  if(n) n.innerHTML = searchCountHTML(key);
+}
+function searchCountHTML(key){
+  const q = search[key];
+  if(!q) return '';
+  const n = (key==='assets')   ? filteredAssets().length
+          : (key==='listings') ? filteredListings().length
+          : filteredOrders().length;
+  return n === 0 ? '' : n + ' match' + (n===1 ? '' : 'es');
+}
+function noResultsHTML(key, what){
+  return `<div class="card card-pad" style="text-align:center;padding:34px;">
+    <p class="muted">No ${what} match &ldquo;${escapeAttr(search[key])}&rdquo;.</p>
+    <button class="btn btn-ghost btn-sm mt-16" onclick="clearSearch('${key}')">Clear search</button>
+  </div>`;
+}
+
+/* ---- what each screen searches over ---- */
+function assetSearchParts(l){
+  const p  = PRODUCTS[l.productKey] || {};
+  const rp = l.selectedRpId ? RENTAL_PRODUCTS[l.selectedRpId] : null;
+  const parts = [ p.name, rp && rp.name, rp && rp.tag, l.assetState || 'In Store', l.id ];
+  /* serial / QR values — the way a contributor actually looks an asset up */
+  Object.keys(l.serials || {}).forEach(function(k){
+    parts.push(k); parts.push(l.serials[k]);
+  });
+  return parts.filter(Boolean);
+}
+function filteredAssets(){
+  const live = listings.filter(function(l){ return l.status==='live'; });
+  const q = search.assets;
+  return q ? live.filter(function(l){ return matchesQuery(assetSearchParts(l), q); }) : live;
+}
+function listingSearchParts(l){
+  const p  = PRODUCTS[l.productKey] || {};
+  const rp = l.selectedRpId ? RENTAL_PRODUCTS[l.selectedRpId] : null;
+  return [ p.name, rp && rp.name, rp && rp.tag, l.status, l.id ].filter(Boolean);
+}
+function filteredListings(){
+  const all = listings.filter(function(l){ return l.addedToMyListings; })
+                      .sort(function(a,b){ return b.createdAt - a.createdAt; });
+  const q = search.listings;
+  return q ? all.filter(function(l){ return matchesQuery(listingSearchParts(l), q); }) : all;
+}
+function orderSearchParts(o){
+  const parts = [ o.id, o.status, assetGroupNames(o) ];
+  (o.items || []).forEach(function(i){ parts.push(i.assetLabel); });
+  return parts.filter(Boolean);
+}
+function filteredOrders(){
+  const list = ordersForTab(currentOrderTab);
+  const q = search.orders;
+  return q ? list.filter(function(o){ return matchesQuery(orderSearchParts(o), q); }) : list;
+}
+
 const LOGISTICS_FEE = 200;   // fallback only — see logisticsFeeFor()
 function orderProtectionFees(order){
   return distinctAssets(order).map(a=>{
@@ -4229,6 +4490,8 @@ function renderMyOrders(){
     <h2 class="step-title">My Orders</h2>
     <p class="step-desc">Incoming rental orders on your live assets — accept, pack, hand off, and track fulfilment here.</p>
     <div class="stage-track" id="order-tabs"></div>
+    ${orders.length ? searchBarHTML('orders', 'Search by order number or product') : ''}
+    <div class="search-count" id="count-orders">${searchCountHTML('orders')}</div>
     <div id="orders-container"></div>
   </div>`;
   renderOrderTabs();
@@ -4238,6 +4501,8 @@ function renderOrderTabs(){
     `<span class="stage-pill ${t.key===currentOrderTab?'current':''}" style="cursor:pointer;" onclick="switchOrderTab('${t.key}')">${t.label}</span>`
   ).join('');
   document.getElementById('orders-container').innerHTML = ordersListHTML();
+  const n = document.getElementById('count-orders');
+  if(n) n.innerHTML = searchCountHTML('orders');
   startListCountdowns();
 }
 function startListCountdowns(){
@@ -4269,9 +4534,11 @@ function ordersForTab(tab){
   return orders.filter(o=>o.status===tab);
 }
 function ordersListHTML(){
-  const list = ordersForTab(currentOrderTab);
+  const list = filteredOrders();
   if(list.length===0){
-    return `<div class="card card-pad" style="text-align:center;padding:40px;"><p class="muted">No orders here yet.</p></div>`;
+    return search.orders
+      ? noResultsHTML('orders', 'orders')
+      : `<div class="card card-pad" style="text-align:center;padding:40px;"><p class="muted">No orders here yet.</p></div>`;
   }
   return list.map(o=>{
     const names = assetGroupNames(o);
