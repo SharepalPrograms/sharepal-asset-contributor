@@ -622,7 +622,7 @@ const APP_URL = './app.html';
       <a href="#faq">FAQ</a>
     </div>
     <div class="nav-cta">
-      <a href="#" class="btn btn-ghost btn-sm">Login</a>
+      <a href="#" class="btn btn-ghost btn-sm" id="navLogin" onclick="event.preventDefault();openLogin();">Login</a>
     </div>
     <button class="nav-burger" aria-label="Open menu" onclick="toggleMobileMenu(true)">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
@@ -645,7 +645,7 @@ const APP_URL = './app.html';
     <a href="#how-it-works" onclick="toggleMobileMenu(false)">How it works</a>
     <a href="#faq" onclick="toggleMobileMenu(false)">FAQ</a>
   </div>
-  <a href="#" class="btn btn-ghost-light btn-block" style="margin-top:14px;">Login</a>
+  <a href="#" class="btn btn-ghost-light btn-block" style="margin-top:14px;" onclick="event.preventDefault();toggleMobileMenu(false);openLogin();">Login</a>
 </div>
 
 <!-- ============================================================
@@ -1088,7 +1088,7 @@ const APP_URL = './app.html';
         <h5>Support</h5>
         <a href="#">Help centre</a>
         <a href="#">Contact us</a>
-        <a href="#">Login</a>
+        <a href="#" onclick="event.preventDefault();openLogin();">Login</a>
       </div>
       <div class="footer-col">
         <h5>Legal</h5>
@@ -1269,10 +1269,13 @@ let pendingFamily = null, pendingName = null;
 
 /* Split out so the destination can be asserted without navigating */
 function appUrlFor(familyKey){
-  return APP_URL + '#/app/mylisting/products/' + familyKey;
+  return familyKey
+    ? APP_URL + '#/app/mylisting/products/' + familyKey
+    : APP_URL + '#/app/overview';
 }
+function goToAppHome(){ goToApp(null); }
 function goToApp(familyKey){
-  const url = appUrlFor(familyKey);
+  const url = appUrlFor(familyKey || null);
   /* A 404 here means APP_URL does not match the deployed filename. Check the
      app file exists before navigating so the failure is legible. */
   fetch(APP_URL, {method:'HEAD'})
@@ -1300,8 +1303,22 @@ async function startListing(familyKey, productName){
   openAuth(productName, familyKey);
 }
 
+/* Plain "Login" — no product in flight, so success opens the app itself
+   rather than a product route. Already signed in? Go straight there. */
+async function openLogin(){
+  pendingFamily = null; pendingName = null;
+  if(!sb){ goToAppHome(); return; }
+  const sess = await sb.auth.getSession();
+  if(sess.data.session){ goToAppHome(); return; }
+  openAuth(null, null);
+}
 function openAuth(productName, familyKey){
   const chip = document.getElementById('authChip');
+  document.getElementById('authTitle').textContent =
+    productName ? 'Sign in to list your gear' : 'Sign in to SharePal';
+  document.getElementById('authSub').textContent =
+    productName ? "Use your email and a password. New here? We'll create your account."
+                : "Use your email and a password to open your partner dashboard.";
   if(productName){
     const fam = (CATEGORIES[activeCatIndex].products || []).find(function(p){ return p.key === familyKey; });
     document.getElementById('authChipImg').innerHTML = tileImage(fam && fam.imageUrl, productName);
@@ -1351,7 +1368,7 @@ async function submitAuth(){
   }
   btn.disabled = false; btn.textContent = 'Continue';
   closeAuth();
-  goToApp(pendingFamily);
+  goToApp(pendingFamily);   // null when they used the Login button -> app home
 }
 function authErrText(err){
   const m = (err && err.message) || 'Could not sign you in';
