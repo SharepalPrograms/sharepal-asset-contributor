@@ -597,9 +597,12 @@ section.tight{padding:72px 0;}
 const SUPABASE_URL      = 'https://ijjwtiugzkvmfqupbirh.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imlqand0aXVnemt2bWZxdXBiaXJoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY3MDAyNTAsImV4cCI6MjEwMjI3NjI1MH0.W98cT1VFqnGtqy6iZZObhE7b7YVQUavM1rlewKGnxaE';
 
-/* Where the partner app lives. Same origin keeps the Supabase session
-   shared, so a contributor who signs in here is already signed in there. */
-const APP_URL = './sharepal-partner-app.html';
+/* Where the partner app lives, relative to this page. Must match the real
+   filename in the repo. Same origin keeps the Supabase session shared, so a
+   contributor who signs in here is already signed in there.
+   Vercel also serves it at /app (extension stripped); './app.html' works
+   from both '/' and '/index.html'. */
+const APP_URL = './app.html';
 </script>
 </head>
 <body>
@@ -1269,7 +1272,18 @@ function appUrlFor(familyKey){
   return APP_URL + '#/app/mylisting/products/' + familyKey;
 }
 function goToApp(familyKey){
-  window.location.href = appUrlFor(familyKey);
+  const url = appUrlFor(familyKey);
+  /* A 404 here means APP_URL does not match the deployed filename. Check the
+     app file exists before navigating so the failure is legible. */
+  fetch(APP_URL, {method:'HEAD'})
+    .then(function(r){
+      if(!r.ok) throw new Error(r.status);
+      window.location.href = url;
+    })
+    .catch(function(){
+      showToast('Could not open the partner app \u2014 check APP_URL (' + APP_URL + ')');
+      console.error('APP_URL not reachable:', APP_URL);
+    });
 }
 async function startListing(familyKey, productName){
   if(!familyKey){ showToast('This product is not available for listing yet'); return; }
