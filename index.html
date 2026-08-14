@@ -551,7 +551,56 @@ section.tight{padding:72px 0;}
 
 .center{text-align:center;}
 .mt-8{margin-top:8px;}
+
+/* ============ product artwork ============ */
+.product-tile-photo img{width:100%;height:100%;object-fit:contain;padding:8px;box-sizing:border-box;filter:none;}
+.tile-ph{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:2px;text-align:center;font-size:9.5px;font-weight:700;color:var(--p600);opacity:.62;line-height:1.2;padding:6px;}
+.tile-ph b{display:block;font-size:10px;}
+.cat-pill-icon img{width:100%;height:100%;object-fit:contain;}
+
+/* ============ auth modal ============ */
+.sp-modal{display:none;position:fixed;inset:0;z-index:4000;background:rgba(3,13,49,.6);
+  backdrop-filter:blur(3px);align-items:center;justify-content:center;padding:20px;}
+.sp-modal.open{display:flex;}
+.sp-modal-card{background:#fff;border-radius:22px;width:100%;max-width:420px;padding:32px;
+  position:relative;box-shadow:0 24px 60px rgba(3,13,49,.3);max-height:92vh;overflow-y:auto;}
+.sp-modal-close{position:absolute;top:16px;right:16px;width:34px;height:34px;border-radius:50%;
+  background:var(--mist);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--ink);}
+.sp-modal h3{font-size:22px;margin-bottom:6px;}
+.sp-modal p.sub{font-size:14.5px;color:#5B6482;margin-bottom:22px;}
+.sp-field{margin-bottom:16px;}
+.sp-field label{display:block;font-size:13.5px;font-weight:700;color:var(--ink);margin-bottom:7px;}
+.sp-field input{width:100%;padding:14px 15px;border-radius:12px;border:1.5px solid var(--line);
+  font-size:15px;font-family:var(--body);color:var(--ink);box-sizing:border-box;}
+.sp-field input:focus{outline:none;border-color:var(--p500);box-shadow:0 0 0 3px rgba(25,68,232,.12);}
+.sp-err{display:none;font-size:12.5px;color:#D92D4A;font-weight:600;margin-top:6px;}
+.sp-chip{display:inline-flex;align-items:center;gap:9px;background:var(--mist);border-radius:12px;
+  padding:9px 13px;font-size:13.5px;font-weight:700;color:var(--ink);margin-bottom:18px;}
+.sp-chip .sp-chip-img{width:32px;height:32px;border-radius:8px;overflow:hidden;background:#fff;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;}
+.sp-chip .sp-chip-img img{width:100%;height:100%;object-fit:contain;}
+/* the placeholder is unreadable at chip size — show a neutral mark instead */
+.sp-chip .sp-chip-img .tile-ph{font-size:0;gap:0;padding:0;}
+.sp-chip .sp-chip-img .tile-ph::after{content:'';width:14px;height:14px;border-radius:4px;
+  border:1.5px dashed var(--p400);opacity:.55;}
+.sp-chip .sp-chip-img .tile-ph b{display:none;}
+.sp-hint{font-size:12.5px;color:#5B6482;margin-top:10px;text-align:center;}
 </style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+/* ============================================================
+   SUPABASE — the product section is driven by the live catalogue.
+   Browsing needs no login (the catalogue is anon-readable);
+   listing does.
+============================================================ */
+const SUPABASE_URL      = 'https://ijjwtiugzkvmfqupbirh.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imlqand0aXVnemt2bWZxdXBiaXJoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY3MDAyNTAsImV4cCI6MjEwMjI3NjI1MH0.W98cT1VFqnGtqy6iZZObhE7b7YVQUavM1rlewKGnxaE';
+
+/* Where the partner app lives. Same origin keeps the Supabase session
+   shared, so a contributor who signs in here is already signed in there. */
+const APP_URL = './sharepal-partner-app.html';
+</script>
 </head>
 <body>
 
@@ -1052,6 +1101,34 @@ section.tight{padding:72px 0;}
   </div>
 </footer>
 
+
+<!-- ============ LOGIN GATE (shown only when listing) ============ -->
+<div class="sp-modal" id="authModal">
+  <div class="sp-modal-card">
+    <div class="sp-modal-close" onclick="closeAuth()">
+      <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </div>
+    <div class="sp-chip" id="authChip" style="display:none;">
+      <span class="sp-chip-img" id="authChipImg"></span>
+      <span id="authChipText"></span>
+    </div>
+    <h3 id="authTitle">Sign in to list your gear</h3>
+    <p class="sub" id="authSub">Use your email and a password. New here? We'll create your account.</p>
+    <div class="sp-field">
+      <label>Email address</label>
+      <input id="authEmail" type="email" placeholder="you@example.com" autocomplete="email">
+      <p class="sp-err" id="authEmailErr">Enter a valid email address</p>
+    </div>
+    <div class="sp-field">
+      <label>Password</label>
+      <input id="authPass" type="password" placeholder="At least 6 characters" autocomplete="current-password">
+      <p class="sp-err" id="authPassErr">Password must be at least 6 characters</p>
+    </div>
+    <button class="btn btn-primary" style="width:100%;" id="authBtn" onclick="submitAuth()">Continue</button>
+    <p class="sp-hint">By continuing you agree to SharePal's Partner Terms and Privacy Policy.</p>
+  </div>
+</div>
+
 <div class="toast" id="toast">
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
   <span id="toastMsg"></span>
@@ -1073,56 +1150,102 @@ const vrIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strok
 const droneIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="6" height="6" rx="1.5"/><path d="M9 9L4 4M15 9l5-5M9 15l-5 5M15 15l5 5"/><circle cx="4" cy="4" r="2"/><circle cx="20" cy="4" r="2"/><circle cx="4" cy="20" r="2"/><circle cx="20" cy="20" r="2"/></svg>';
 const batteryIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="8" width="18" height="8" rx="2"/><path d="M22 11v2"/></svg>';
 
-const CATEGORIES = [
-  { key:'dslr', label:'DSLR Cameras', icon:dslrIcon, products:[
-      { name:'Canon EOS 1500D', icon:dslrIcon },
-      { name:'Nikon D5600', icon:dslrIcon },
-      { name:'Sony Alpha a7 III', icon:dslrIcon },
-      { name:'DSLR Prime Lens', icon:lensIcon },
-      { name:'DSLR Gimbal', icon:gimbalIcon }
-  ]},
-  { key:'action', label:'Action Cameras', icon:actionIcon, products:[
-      { name:'GoPro Hero 13', icon:actionIcon },
-      { name:'GoPro Hero 12', icon:actionIcon },
-      { name:'Insta360 X4', icon:threeSixtyIcon },
-      { name:'DJI Osmo Action 5', icon:actionIcon },
-      { name:'Mounts &amp; Rigs Kit', icon:mountIcon }
-  ]},
-  { key:'gaming', label:'Gaming Consoles', icon:consoleIcon, products:[
-      { name:'PS5 Console', icon:consoleIcon },
-      { name:'PS5 Slim + Controller', icon:consoleIcon },
-      { name:'Xbox Series X', icon:consoleIcon },
-      { name:'Racing Wheel Kit', icon:wheelIcon },
-      { name:'VR Headset', icon:vrIcon }
-  ]},
-  { key:'drones', label:'Drones', icon:droneIcon, products:[
-      { name:'DJI Mini 5 Pro', icon:droneIcon },
-      { name:'DJI Air 3', icon:droneIcon },
-      { name:'DJI FPV Combo', icon:droneIcon },
-      { name:'Extra Battery Kit', icon:batteryIcon }
-  ]}
+/* ------------------------------------------------------------
+   Fallback shown only if Supabase cannot be reached, so the
+   landing page never renders an empty product section.
+------------------------------------------------------------ */
+const FALLBACK_CATEGORIES = [
+  { key:'gaming', label:'Gaming', icon:consoleIcon, products:[{ name:'PlayStation 5', icon:consoleIcon }] },
+  { key:'action-camera', label:'Action Cameras', icon:actionIcon, products:[
+      { name:'GoPro Hero 13', icon:actionIcon }, { name:'Insta360 X5', icon:threeSixtyIcon }] }
 ];
+let CATEGORIES = FALLBACK_CATEGORIES;
 let activeCatIndex = 0;
+
+const sb = (typeof supabase !== 'undefined' && SUPABASE_URL.indexOf('supabase.co') > -1)
+  ? supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+  : null;
+
+/* Artwork only — falls back to a labelled placeholder, matching the app */
+function tileImage(url, alt){
+  const ph = '<div class="tile-ph"><b>Preview</b>not available</div>';
+  if(!url) return ph;
+  return '<img src="' + url + '" alt="' + String(alt || '').replace(/"/g,'&quot;') + '" loading="lazy" '
+       + 'onerror="this.outerHTML=' + JSON.stringify(ph).replace(/"/g,'&quot;') + '">';
+}
+
+/* ------------------------------------------------------------
+   Load categories + PRODUCT FAMILIES (not rental products).
+   A contributor picks the thing they own; which rental product
+   to list it as is chosen later, inside the app.
+------------------------------------------------------------ */
+async function loadCatalogue(){
+  if(!sb) return;
+  const [cats, fams] = await Promise.all([
+    sb.from('categories').select('*').order('sort_order'),
+    sb.from('product_families').select('*').order('sort_order')
+  ]);
+  if(cats.error || fams.error || !fams.data || !fams.data.length){
+    console.warn('Catalogue load failed, keeping fallback', cats.error || fams.error);
+    return;
+  }
+  const catRows = cats.data && cats.data.length ? cats.data : [];
+  const grouped = catRows.map(function(c){
+    return {
+      key: c.category_key,
+      label: c.category_name,
+      imageUrl: c.image_url,
+      icon: null,
+      products: fams.data
+        .filter(function(f){ return f.category_key === c.category_key; })
+        .map(function(f){
+          return { key: f.family_key, name: f.family_name, imageUrl: f.family_image_url };
+        })
+    };
+  }).filter(function(g){ return g.products.length > 0; });
+
+  /* families with no category still need somewhere to live */
+  const orphans = fams.data.filter(function(f){
+    return !catRows.some(function(c){ return c.category_key === f.category_key; });
+  });
+  if(orphans.length){
+    grouped.push({ key:'other', label:'More gear', imageUrl:null, icon:null,
+      products: orphans.map(function(f){
+        return { key: f.family_key, name: f.family_name, imageUrl: f.family_image_url };
+      })});
+  }
+
+  if(grouped.length){
+    CATEGORIES = grouped;
+    activeCatIndex = 0;
+    renderCatPills();
+    renderSubcats();
+  }
+}
+
 function renderCatPills(){
-  document.getElementById('catRow').innerHTML = CATEGORIES.map((c,i) => `
-    <div class="cat-pill ${i===activeCatIndex?'active':''}" onclick="selectCategory(${i})">
-      <div class="cat-pill-icon">${c.icon}</div>
-      <div class="cat-pill-label">${c.label}</div>
-      <div class="cat-pill-underline"></div>
-    </div>`).join('');
+  document.getElementById('catRow').innerHTML = CATEGORIES.map(function(c,i){
+    const art = c.imageUrl ? tileImage(c.imageUrl, c.label) : (c.icon || '');
+    return '<div class="cat-pill ' + (i===activeCatIndex?'active':'') + '" onclick="selectCategory(' + i + ')">'
+      + '<div class="cat-pill-icon">' + art + '</div>'
+      + '<div class="cat-pill-label">' + c.label + '</div>'
+      + '<div class="cat-pill-underline"></div></div>';
+  }).join('');
 }
 function renderSubcats(){
   const cat = CATEGORIES[activeCatIndex];
-  document.getElementById('subcatRow').innerHTML = cat.products.map(p => `
-    <div class="product-tile" data-product="${p.name}">
-      <div class="product-tile-photo">${p.tag ? `<span class="product-tile-tag">${p.tag}</span>` : ''}${p.icon}</div>
-      <b>${p.name}</b>
-      <div class="product-tile-cta">List this<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
-    </div>`).join('');
+  document.getElementById('subcatRow').innerHTML = cat.products.map(function(p){
+    const art = p.imageUrl !== undefined ? tileImage(p.imageUrl, p.name) : (p.icon || '');
+    return '<div class="product-tile" data-product="' + p.name + '" data-family="' + (p.key || '') + '">'
+      + '<div class="product-tile-photo">' + art + '</div>'
+      + '<b>' + p.name + '</b>'
+      + '<div class="product-tile-cta">List this<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>'
+      + '</div>';
+  }).join('');
 }
-document.getElementById('subcatRow').addEventListener('click', (e) => {
+document.getElementById('subcatRow').addEventListener('click', function(e){
   const tile = e.target.closest('.product-tile');
-  if(tile) startListing(tile.dataset.product);
+  if(tile) startListing(tile.dataset.family, tile.dataset.product);
 });
 function selectCategory(i){
   activeCatIndex = i;
@@ -1135,11 +1258,98 @@ function catScroll(rowId, dir){
   const row = document.getElementById(rowId);
   if(row && row.scrollBy) row.scrollBy({ left: dir*230, behavior:'smooth' });
 }
-function startListing(productName){
-  showToast('Let\u2019s list your ' + productName + ' \u2014 redirecting you to sign up');
+
+/* ------------------------------------------------------------
+   Listing flow: browsing is open, listing needs an account.
+------------------------------------------------------------ */
+let pendingFamily = null, pendingName = null;
+
+/* Split out so the destination can be asserted without navigating */
+function appUrlFor(familyKey){
+  return APP_URL + '#/app/mylisting/products/' + familyKey;
 }
+function goToApp(familyKey){
+  window.location.href = appUrlFor(familyKey);
+}
+async function startListing(familyKey, productName){
+  if(!familyKey){ showToast('This product is not available for listing yet'); return; }
+  pendingFamily = familyKey; pendingName = productName;
+
+  if(sb){
+    const sess = await sb.auth.getSession();
+    if(sess.data.session){ goToApp(familyKey); return; }   // already signed in
+  } else {
+    showToast('Let\u2019s list your ' + productName + ' \u2014 redirecting you');
+    setTimeout(function(){ goToApp(familyKey); }, 700);
+    return;
+  }
+  openAuth(productName, familyKey);
+}
+
+function openAuth(productName, familyKey){
+  const chip = document.getElementById('authChip');
+  if(productName){
+    const fam = (CATEGORIES[activeCatIndex].products || []).find(function(p){ return p.key === familyKey; });
+    document.getElementById('authChipImg').innerHTML = tileImage(fam && fam.imageUrl, productName);
+    document.getElementById('authChipText').textContent = 'Listing your ' + productName;
+    chip.style.display = '';
+  } else { chip.style.display = 'none'; }
+  document.getElementById('authModal').classList.add('open');
+  setTimeout(function(){ document.getElementById('authEmail').focus(); }, 60);
+}
+function closeAuth(){
+  document.getElementById('authModal').classList.remove('open');
+  document.getElementById('authPass').value = '';
+}
+document.getElementById('authModal').addEventListener('click', function(e){
+  if(e.target === this) closeAuth();
+});
+document.getElementById('authPass').addEventListener('keydown', function(e){
+  if(e.key === 'Enter') submitAuth();
+});
+
+function setErr(id, on){ const el = document.getElementById(id); if(el) el.style.display = on ? 'block' : 'none'; }
+
+async function submitAuth(){
+  const email = document.getElementById('authEmail').value.trim();
+  const pw    = document.getElementById('authPass').value;
+  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){ setErr('authEmailErr', true); return; }
+  setErr('authEmailErr', false);
+  if(pw.length < 6){ setErr('authPassErr', true); return; }
+  setErr('authPassErr', false);
+
+  const btn = document.getElementById('authBtn');
+  btn.disabled = true; btn.textContent = 'Signing in\u2026';
+
+  let r = await sb.auth.signInWithPassword({ email: email, password: pw });
+  if(r.error && /invalid login credentials/i.test(r.error.message)){
+    const up = await sb.auth.signUp({ email: email, password: pw });
+    if(up.error){ btn.disabled = false; btn.textContent = 'Continue'; showToast(authErrText(up.error)); return; }
+    if(!up.data.session){
+      btn.disabled = false; btn.textContent = 'Continue';
+      showToast('Account created \u2014 confirm your email, then sign in.');
+      return;
+    }
+    r = up;
+  } else if(r.error){
+    btn.disabled = false; btn.textContent = 'Continue';
+    showToast(authErrText(r.error)); return;
+  }
+  btn.disabled = false; btn.textContent = 'Continue';
+  closeAuth();
+  goToApp(pendingFamily);
+}
+function authErrText(err){
+  const m = (err && err.message) || 'Could not sign you in';
+  if(/email not confirmed/i.test(m)) return 'Email not confirmed \u2014 check your inbox.';
+  if(/security purposes|rate limit|too many/i.test(m)) return 'Too many attempts \u2014 wait a minute.';
+  if(/provider is not enabled|unsupported provider/i.test(m)) return 'Email sign-in is not enabled on this project.';
+  return m;
+}
+
 renderCatPills();
 renderSubcats();
+loadCatalogue();
 
 /* ============================================================
    DATA — TWO-TOUCH TIMELINE
