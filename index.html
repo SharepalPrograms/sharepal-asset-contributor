@@ -597,7 +597,7 @@ section.tight{padding:72px 0;}
 const SUPABASE_URL      = 'https://ijjwtiugzkvmfqupbirh.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imlqand0aXVnemt2bWZxdXBiaXJoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY3MDAyNTAsImV4cCI6MjEwMjI3NjI1MH0.W98cT1VFqnGtqy6iZZObhE7b7YVQUavM1rlewKGnxaE';
 
-/* Where the partner app lives. With the rewrite in vercel.json every
+/* Where the contributor app lives. With the rewrite in vercel.json every
    /app/* path serves app.html, so we can link to clean URLs like
    /app/mylisting/products/ps5 instead of app.html#/app/...
    Set APP_CLEAN_URLS to false to fall back to hash links. */
@@ -1129,7 +1129,7 @@ const APP_BASE = '/app';              // used when APP_CLEAN_URLS is true
       <p class="sp-err" id="authPassErr">Password must be at least 6 characters</p>
     </div>
     <button class="btn btn-primary" style="width:100%;" id="authBtn" onclick="submitAuth()">Continue</button>
-    <p class="sp-hint">By continuing you agree to SharePal's Partner Terms and Privacy Policy.</p>
+    <p class="sp-hint">By continuing you agree to SharePal's Contributor Terms and Privacy Policy.</p>
   </div>
 </div>
 
@@ -1332,7 +1332,7 @@ function openAuth(productName, familyKey){
     productName ? 'Sign in to list your gear' : 'Sign in to SharePal';
   document.getElementById('authSub').textContent =
     productName ? "Use your email and a password. New here? We'll create your account."
-                : "Use your email and a password to open your partner dashboard.";
+                : "Use your email and a password to open your contributor dashboard.";
   if(productName){
     const fam = (CATEGORIES[activeCatIndex].products || []).find(function(p){ return p.key === familyKey; });
     document.getElementById('authChipImg').innerHTML = tileImage(fam && fam.imageUrl, productName);
