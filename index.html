@@ -1275,19 +1275,32 @@ function appUrlFor(familyKey){
                         : (APP_URL + '#/app' + route);
 }
 function goToAppHome(){ goToApp(null); }
-function goToApp(familyKey){
-  const url = appUrlFor(familyKey || null);
-  /* A 404 here means APP_URL does not match the deployed filename. Check the
-     app file exists before navigating so the failure is legible. */
-  fetch(APP_CLEAN_URLS ? APP_BASE + '/overview' : APP_URL, {method:'HEAD'})
-    .then(function(r){
-      if(!r.ok) throw new Error(r.status);
-      window.location.href = url;
-    })
-    .catch(function(){
-      showToast('Could not open the partner app \u2014 check the /app rewrite in vercel.json');
-      console.error('App route not reachable. Is vercel.json deployed?', appUrlFor(null));
-    });
+/* The clean-URL route (/app/...) only exists once the rewrite in vercel.json
+   is deployed. Probe it once, and if it is missing fall back to the hash URL
+   (app.html#/app/...) so the click still works instead of dead-ending. The
+   result is cached so we probe at most once per page load. */
+let CLEAN_URLS_OK = null;
+function hashUrlFor(familyKey){
+  const route = familyKey ? '/mylisting/products/' + familyKey : '/overview';
+  return APP_URL + '#/app' + route;
+}
+async function cleanUrlsWork(){
+  if(!APP_CLEAN_URLS) return false;
+  if(CLEAN_URLS_OK !== null) return CLEAN_URLS_OK;
+  try {
+    const r = await fetch(APP_BASE + '/overview', { method:'HEAD' });
+    CLEAN_URLS_OK = r.ok;
+  } catch(e){ CLEAN_URLS_OK = false; }
+  if(!CLEAN_URLS_OK){
+    console.warn('Clean /app/* URLs are not live (is vercel.json deployed?). '
+      + 'Falling back to ' + hashUrlFor(null));
+  }
+  return CLEAN_URLS_OK;
+}
+async function goToApp(familyKey){
+  const key = familyKey || null;
+  const ok  = await cleanUrlsWork();
+  window.location.href = ok ? appUrlFor(key) : hashUrlFor(key);
 }
 async function startListing(familyKey, productName){
   if(!familyKey){ showToast('This product is not available for listing yet'); return; }
