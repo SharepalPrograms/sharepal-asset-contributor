@@ -1,0 +1,412 @@
+## Table `items_master`
+
+### Columns
+
+| Name | Type | Constraints |
+|------|------|-------------|
+| `item_id` | `text` | Primary |
+| `item_name` | `text` |  |
+| `role` | `item_role` |  |
+| `category` | `text` |  Nullable |
+| `supply_price` | `numeric` |  |
+| `identifier_type` | `identifier_type` |  |
+| `identifier_label` | `text` |  Nullable |
+| `identifier_format` | `text` |  Nullable |
+| `image_url` | `text` |  Nullable |
+| `description` | `text` |  Nullable |
+| `identifier_required` | `bool` |  Nullable |
+| `created_at` | `timestamptz` |  |
+
+## Table `product_families`
+
+### Columns
+
+| Name | Type | Constraints |
+|------|------|-------------|
+| `family_key` | `text` | Primary |
+| `family_name` | `text` |  |
+| `primary_item_id` | `text` |  |
+| `family_image_url` | `text` |  Nullable |
+| `sort_order` | `int4` |  |
+| `category_key` | `text` |  |
+
+## Table `rental_products`
+
+### Columns
+
+| Name | Type | Constraints |
+|------|------|-------------|
+| `product_id` | `text` | Primary |
+| `family_key` | `text` |  |
+| `product_name` | `text` |  |
+| `tag` | `product_tag` |  |
+| `aov` | `numeric` |  |
+| `description` | `text` |  Nullable |
+| `product_image_url` | `text` |  Nullable |
+| `sort_order` | `int4` |  |
+
+## Table `product_items`
+
+### Columns
+
+| Name | Type | Constraints |
+|------|------|-------------|
+| `product_id` | `text` | Primary |
+| `item_id` | `text` | Primary |
+| `qty` | `int4` |  |
+
+## Table `kit_items`
+
+### Columns
+
+| Name | Type | Constraints |
+|------|------|-------------|
+| `family_key` | `text` | Primary |
+| `item_id` | `text` | Primary |
+| `qty_per_kit` | `int4` |  |
+| `hidden` | `bool` |  |
+
+## Table `family_costs`
+
+### Columns
+
+| Name | Type | Constraints |
+|------|------|-------------|
+| `cost_id` | `text` | Primary |
+| `family_key` | `text` |  |
+| `cost_name` | `text` |  |
+| `cost_type` | `cost_type` |  |
+| `amount` | `numeric` |  |
+| `description` | `text` |  Nullable |
+
+## Table `protection_plans`
+
+### Columns
+
+| Name | Type | Constraints |
+|------|------|-------------|
+| `plan_id` | `text` | Primary |
+| `family_key` | `text` |  |
+| `plan_key` | `plan_key` |  |
+| `plan_name` | `text` |  |
+| `price_per_order` | `numeric` |  |
+| `contributor_share` | `numeric` |  |
+| `covers` | `text` |  Nullable |
+| `description` | `text` |  Nullable |
+| `sort_order` | `int4` |  |
+
+## Table `profiles`
+
+### Columns
+
+| Name | Type | Constraints |
+|------|------|-------------|
+| `id` | `uuid` | Primary |
+| `full_name` | `text` |  Nullable |
+| `email` | `text` |  Nullable |
+| `phone` | `text` |  Nullable |
+| `kyc_status` | `text` |  |
+| `bank_added` | `bool` |  |
+| `created_at` | `timestamptz` |  |
+| `updated_at` | `timestamptz` |  |
+
+## Table `addresses`
+
+### Columns
+
+| Name | Type | Constraints |
+|------|------|-------------|
+| `id` | `uuid` | Primary |
+| `user_id` | `uuid` |  |
+| `label` | `text` |  Nullable |
+| `line1` | `text` |  |
+| `line2` | `text` |  Nullable |
+| `city` | `text` |  |
+| `state` | `text` |  Nullable |
+| `pincode` | `text` |  |
+| `phone` | `text` |  Nullable |
+| `preferred_start` | `time` |  Nullable |
+| `preferred_end` | `time` |  Nullable |
+| `created_at` | `timestamptz` |  |
+
+## Table `listings`
+
+### Columns
+
+| Name | Type | Constraints |
+|------|------|-------------|
+| `id` | `uuid` | Primary |
+| `ref` | `text` |  Nullable Unique |
+| `user_id` | `uuid` |  |
+| `family_key` | `text` |  |
+| `product_id` | `text` |  Nullable |
+| `status` | `listing_status` |  |
+| `asset_state` | `asset_state` |  |
+| `selected_plan` | `plan_key` |  |
+| `deselected_accessories` | `_text` |  |
+| `reduced_qty` | `jsonb` |  |
+| `uploaded_photos` | `_text` |  |
+| `video_uploaded` | `bool` |  |
+| `address_id` | `uuid` |  Nullable |
+| `tracking_id` | `text` |  Nullable |
+| `lock_code` | `text` |  Nullable |
+| `lock_code_revealed` | `bool` |  |
+| `added_to_my_listings` | `bool` |  |
+| `is_upgrade` | `bool` |  |
+| `upgrade_new_items` | `jsonb` |  Nullable |
+| `created_at` | `timestamptz` |  |
+| `updated_at` | `timestamptz` |  |
+
+## Table `listing_items`
+
+### Columns
+
+| Name | Type | Constraints |
+|------|------|-------------|
+| `id` | `uuid` | Primary |
+| `listing_id` | `uuid` |  |
+| `item_id` | `text` |  |
+| `unit_no` | `int4` |  |
+| `identifier_type` | `identifier_type` |  |
+| `identifier_value` | `text` |  Nullable |
+| `supplied_by_kit` | `bool` |  |
+| `created_at` | `timestamptz` |  |
+
+## Table `listing_digital_items`
+
+### Columns
+
+| Name | Type | Constraints |
+|------|------|-------------|
+| `id` | `uuid` | Primary |
+| `listing_id` | `uuid` |  |
+| `item_id` | `text` |  |
+| `type_label` | `text` |  |
+| `account_email` | `text` |  |
+| `online_id` | `text` |  |
+| `credential_ref` | `text` |  Nullable |
+| `subscription_end` | `date` |  |
+| `created_at` | `timestamptz` |  |
+
+## Table `availability_blocks`
+
+### Columns
+
+| Name | Type | Constraints |
+|------|------|-------------|
+| `id` | `uuid` | Primary |
+| `listing_id` | `uuid` |  |
+| `start_date` | `date` |  |
+| `end_date` | `date` |  |
+| `created_at` | `timestamptz` |  |
+
+## Table `orders`
+
+### Columns
+
+| Name | Type | Constraints |
+|------|------|-------------|
+| `id` | `uuid` | Primary |
+| `ref` | `text` |  Nullable Unique |
+| `user_id` | `uuid` |  |
+| `product_id` | `text` |  |
+| `status` | `order_status` |  |
+| `earnings` | `numeric` |  |
+| `rental_duration` | `int4` |  Nullable |
+| `accept_deadline` | `timestamptz` |  Nullable |
+| `decline_reason` | `text` |  Nullable |
+| `pickup_date` | `date` |  Nullable |
+| `delivery_window` | `text` |  Nullable |
+| `return_pickup_date` | `date` |  Nullable |
+| `return_time_window` | `text` |  Nullable |
+| `inspection_started` | `bool` |  |
+| `return_scheduled` | `bool` |  |
+| `collection_done` | `bool` |  |
+| `courier_booked` | `bool` |  |
+| `payout_status` | `text` |  Nullable |
+| `created_at` | `timestamptz` |  |
+| `updated_at` | `timestamptz` |  |
+
+## Table `order_listings`
+
+### Columns
+
+| Name | Type | Constraints |
+|------|------|-------------|
+| `order_id` | `uuid` | Primary |
+| `listing_id` | `uuid` | Primary |
+
+## Table `order_items`
+
+### Columns
+
+| Name | Type | Constraints |
+|------|------|-------------|
+| `id` | `uuid` | Primary |
+| `order_id` | `uuid` |  |
+| `listing_id` | `uuid` |  |
+| `item_id` | `text` |  |
+| `asset_label` | `text` |  Nullable |
+| `tag` | `text` |  Nullable |
+| `identifier_value` | `text` |  Nullable |
+| `scanned` | `bool` |  |
+| `photo_taken` | `bool` |  |
+| `return_present` | `bool` |  Nullable |
+| `return_has_issue` | `bool` |  |
+| `return_not_working` | `bool` |  |
+| `return_damaged` | `bool` |  |
+| `damage_notes` | `text` |  Nullable |
+
+## Table `categories`
+
+### Columns
+
+| Name | Type | Constraints |
+|------|------|-------------|
+| `category_key` | `text` | Primary |
+| `category_name` | `text` |  |
+| `image_url` | `text` |  Nullable |
+| `sort_order` | `int4` |  |
+| `created_at` | `timestamptz` |  |
+
+## Custom Types / Enums
+
+### `item_role`
+
+`Primary` | `Accessory` | `Digital` | `Packing` | `Consumable`
+
+### `identifier_type`
+
+`Serial_Number` | `QR_ID` | `Credentials` | `None`
+
+### `product_tag`
+
+`Basic` | `Combo`
+
+### `cost_type`
+
+`Shipping` | `Logistics`
+
+### `listing_status`
+
+`items-pending` | `protection-pending` | `condition-pending` | `checkout-pending` | `awaiting-delivery` | `addition-pending` | `profile-pending` | `live`
+
+### `asset_state`
+
+`In Store` | `Rented` | `In Transit`
+
+### `order_status`
+
+`new` | `preparing` | `pickup` | `active` | `completed` | `disputed` | `cancelled`
+
+### `plan_key`
+
+`combo` | `damage` | `theft` | `none`
+
+## RLS Policies
+
+### `items_master`
+
+| Policy | Command | Roles | Action | USING | WITH CHECK |
+|--------|---------|-------|--------|-------|------------|
+| `catalogue readable` | SELECT | anon, authenticated | PERMISSIVE | `true` | — |
+
+### `rental_products`
+
+| Policy | Command | Roles | Action | USING | WITH CHECK |
+|--------|---------|-------|--------|-------|------------|
+| `catalogue readable` | SELECT | anon, authenticated | PERMISSIVE | `true` | — |
+
+### `product_items`
+
+| Policy | Command | Roles | Action | USING | WITH CHECK |
+|--------|---------|-------|--------|-------|------------|
+| `catalogue readable` | SELECT | anon, authenticated | PERMISSIVE | `true` | — |
+
+### `product_families`
+
+| Policy | Command | Roles | Action | USING | WITH CHECK |
+|--------|---------|-------|--------|-------|------------|
+| `catalogue readable` | SELECT | anon, authenticated | PERMISSIVE | `true` | — |
+
+### `kit_items`
+
+| Policy | Command | Roles | Action | USING | WITH CHECK |
+|--------|---------|-------|--------|-------|------------|
+| `catalogue readable` | SELECT | anon, authenticated | PERMISSIVE | `true` | — |
+
+### `family_costs`
+
+| Policy | Command | Roles | Action | USING | WITH CHECK |
+|--------|---------|-------|--------|-------|------------|
+| `catalogue readable` | SELECT | anon, authenticated | PERMISSIVE | `true` | — |
+
+### `protection_plans`
+
+| Policy | Command | Roles | Action | USING | WITH CHECK |
+|--------|---------|-------|--------|-------|------------|
+| `catalogue readable` | SELECT | anon, authenticated | PERMISSIVE | `true` | — |
+
+### `profiles`
+
+| Policy | Command | Roles | Action | USING | WITH CHECK |
+|--------|---------|-------|--------|-------|------------|
+| `own profile readable` | SELECT | authenticated | PERMISSIVE | `(auth.uid() = id)` | — |
+| `own profile writable` | UPDATE | authenticated | PERMISSIVE | `(auth.uid() = id)` | `(auth.uid() = id)` |
+
+### `addresses`
+
+| Policy | Command | Roles | Action | USING | WITH CHECK |
+|--------|---------|-------|--------|-------|------------|
+| `own addresses` | ALL | authenticated | PERMISSIVE | `(auth.uid() = user_id)` | `(auth.uid() = user_id)` |
+
+### `listings`
+
+| Policy | Command | Roles | Action | USING | WITH CHECK |
+|--------|---------|-------|--------|-------|------------|
+| `own listings` | ALL | authenticated | PERMISSIVE | `(auth.uid() = user_id)` | `(auth.uid() = user_id)` |
+
+### `listing_items`
+
+| Policy | Command | Roles | Action | USING | WITH CHECK |
+|--------|---------|-------|--------|-------|------------|
+| `own listing items` | ALL | authenticated | PERMISSIVE | `(EXISTS ( SELECT 1    FROM listings l   WHERE ((l.id = listing_items.listing_id) AND (l.user_id = auth.uid()))))` | `(EXISTS ( SELECT 1    FROM listings l   WHERE ((l.id = listing_items.listing_id) AND (l.user_id = auth.uid()))))` |
+
+### `listing_digital_items`
+
+| Policy | Command | Roles | Action | USING | WITH CHECK |
+|--------|---------|-------|--------|-------|------------|
+| `own digital items` | ALL | authenticated | PERMISSIVE | `(EXISTS ( SELECT 1    FROM listings l   WHERE ((l.id = listing_digital_items.listing_id) AND (l.user_id = auth.uid()))))` | `(EXISTS ( SELECT 1    FROM listings l   WHERE ((l.id = listing_digital_items.listing_id) AND (l.user_id = auth.uid()))))` |
+
+### `availability_blocks`
+
+| Policy | Command | Roles | Action | USING | WITH CHECK |
+|--------|---------|-------|--------|-------|------------|
+| `own availability` | ALL | authenticated | PERMISSIVE | `(EXISTS ( SELECT 1    FROM listings l   WHERE ((l.id = availability_blocks.listing_id) AND (l.user_id = auth.uid()))))` | `(EXISTS ( SELECT 1    FROM listings l   WHERE ((l.id = availability_blocks.listing_id) AND (l.user_id = auth.uid()))))` |
+
+### `orders`
+
+| Policy | Command | Roles | Action | USING | WITH CHECK |
+|--------|---------|-------|--------|-------|------------|
+| `own orders readable` | SELECT | authenticated | PERMISSIVE | `(auth.uid() = user_id)` | — |
+| `own orders updatable` | UPDATE | authenticated | PERMISSIVE | `(auth.uid() = user_id)` | `(auth.uid() = user_id)` |
+
+### `order_listings`
+
+| Policy | Command | Roles | Action | USING | WITH CHECK |
+|--------|---------|-------|--------|-------|------------|
+| `own order listings` | SELECT | authenticated | PERMISSIVE | `(EXISTS ( SELECT 1    FROM orders o   WHERE ((o.id = order_listings.order_id) AND (o.user_id = auth.uid()))))` | — |
+
+### `order_items`
+
+| Policy | Command | Roles | Action | USING | WITH CHECK |
+|--------|---------|-------|--------|-------|------------|
+| `own order items readable` | SELECT | authenticated | PERMISSIVE | `(EXISTS ( SELECT 1    FROM orders o   WHERE ((o.id = order_items.order_id) AND (o.user_id = auth.uid()))))` | — |
+| `own order items updatable` | UPDATE | authenticated | PERMISSIVE | `(EXISTS ( SELECT 1    FROM orders o   WHERE ((o.id = order_items.order_id) AND (o.user_id = auth.uid()))))` | `(EXISTS ( SELECT 1    FROM orders o   WHERE ((o.id = order_items.order_id) AND (o.user_id = auth.uid()))))` |
+
+### `categories`
+
+| Policy | Command | Roles | Action | USING | WITH CHECK |
+|--------|---------|-------|--------|-------|------------|
+| `catalogue readable` | SELECT | anon, authenticated | PERMISSIVE | `true` | — |
+
