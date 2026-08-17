@@ -891,28 +891,28 @@ input,select,textarea{font-family:inherit;}
 ============================================================ */
 
 let ITEMS_MASTER = {
-  'PS5-CONSOLE':        {name:'PlayStation 5 Console',       role:'Primary', identifierType:'Serial_Number', identifierLabel:'Console serial number', identifierFormat:'17-char serial on the rear label, e.g. SN200000000000001',   iconHint:'console'},
-  'POWER-CABLE':        {name:'Power Cable',                 role:'Accessory', identifierType:'QR_ID', identifierLabel:'Scan cable QR tag', identifierFormat:'SharePal QR sticker, e.g. SP-QR-000001', iconHint:'cable'},
-  'USB-TO-C-CABLE':     {name:'USB-to-C Cable',              role:'Accessory', identifierType:'QR_ID', identifierLabel:'Scan cable QR tag', identifierFormat:'SharePal QR sticker, e.g. SP-QR-000001', iconHint:'cable'},
-  'PS5-CONTROLLER':     {name:'PS5 Controller (DualSense)',  role:'Accessory', identifierType:'Serial_Number', identifierLabel:'Controller serial number', identifierFormat:'Serial inside the battery bay, e.g. SN200000000000001', iconHint:'controller'},
-  'HDMI-TO-HDMI-CABLE': {name:'HDMI-to-HDMI Cable',          role:'Accessory', identifierType:'QR_ID', identifierLabel:'Scan cable QR tag', identifierFormat:'SharePal QR sticker, e.g. SP-QR-000001', iconHint:'cable'},
-  'PS5-CONSOLE-CASE':   {name:'PS5 Console Carry Case',      role:'Accessory', identifierType:'QR_ID', identifierLabel:'Scan case QR tag', identifierFormat:'SharePal QR sticker, e.g. SP-QR-000001', iconHint:'case'},
-  'GOPRO-HERO-13-CAMERA':  {name:'GoPro Hero 13 Camera',       role:'Primary', identifierType:'Serial_Number', identifierLabel:'Camera serial number', identifierFormat:'Serial in the battery door, e.g. C3441234567890',   iconHint:'console'},
-  'GOPRO-HERO-13-BATTERY': {name:'GoPro Hero 13 Battery',       role:'Accessory', identifierType:'Serial_Number', identifierLabel:'Battery serial number', identifierFormat:'Printed on the battery label', iconHint:'battery'},
-  'GOPRO-HERO-13-CHARGER': {name:'GoPro Hero 13 Charger',       role:'Accessory', identifierType:'Serial_Number', identifierLabel:'Charger serial number', identifierFormat:'Printed on the charger underside', iconHint:'charger'},
-  'C-TO-C-CABLE':          {name:'USB C-to-C Cable',            role:'Accessory', identifierType:'QR_ID', identifierLabel:'Scan cable QR tag', identifierFormat:'SharePal QR sticker, e.g. SP-QR-000001', iconHint:'cable'},
-  'GPRO-SELFIE-STK':       {name:'GoPro Selfie Stick',          role:'Accessory', identifierType:'QR_ID', identifierLabel:'Scan mount QR tag', identifierFormat:'SharePal QR sticker, e.g. SP-QR-000001', iconHint:'selfie stick'},
-  'SANDISK-64GB-MICROSD':  {name:'SanDisk 64GB MicroSD Card',   role:'Accessory', identifierType:'Serial_Number', identifierLabel:'Card serial number', identifierFormat:'Serial printed on the card face', iconHint:'card'},
-  'GPRO-BASE-MOUNT':       {name:'GoPro Base Mount',            role:'Accessory', identifierType:'QR_ID', identifierLabel:'Scan mount QR tag', identifierFormat:'SharePal QR sticker, e.g. SP-QR-000001', iconHint:'mount'},
-  'GPRO-SCREW':            {name:'GoPro Thumb Screw',           role:'Accessory', identifierType:'QR_ID', identifierLabel:'Scan fastener QR tag', identifierFormat:'SharePal QR sticker, e.g. SP-QR-000001', iconHint:'screw'},
-  'GOPRO-SILICON-COVER':   {name:'GoPro Silicon Cover',         role:'Accessory', identifierType:'QR_ID', identifierLabel:'Scan cover QR tag', identifierFormat:'SharePal QR sticker, e.g. SP-QR-000001', iconHint:'case'},
-  'GOPRO-CASE-LARGE':      {name:'GoPro Large Carry Case',      role:'Accessory', identifierType:'QR_ID', identifierLabel:'Scan case QR tag', identifierFormat:'SharePal QR sticker, e.g. SP-QR-000001', iconHint:'case'},
-  'GOPRO-CARRY-BAG':       {name:'GoPro Carry Bag',             role:'Accessory', identifierType:'QR_ID', identifierLabel:'Scan bag QR tag', identifierFormat:'SharePal QR sticker, e.g. SP-QR-000001', iconHint:'carry bag'},
-  'GPRO-HELMET-MOUNT':     {name:'GoPro Helmet Mount',          role:'Accessory', identifierType:'QR_ID', identifierLabel:'Scan mount QR tag', identifierFormat:'SharePal QR sticker, e.g. SP-QR-000001', iconHint:'mount'},
-  'GPRO-DIVE-CASE':        {name:'GoPro Dive Housing',          role:'Accessory', identifierType:'Serial_Number', identifierLabel:'Housing serial number', identifierFormat:'Serial moulded inside the housing door', iconHint:'case'},
-  'GPRO-FLOATY':           {name:'GoPro Floaty Handle',         role:'Accessory', identifierType:'QR_ID', identifierLabel:'Scan grip QR tag', identifierFormat:'SharePal QR sticker, e.g. SP-QR-000001', iconHint:'mount'},
-  'GPRO-ANTI-FOG':         {name:'Anti-Fog Inserts',            role:'Accessory', identifierType:'None', identifierLabel:'', identifierFormat:'', iconHint:'default'},
-  'PS-PLUS-MEMBERSHIP':    {name:'PlayStation Plus Membership',  role:'Digital', identifierType:'Credentials', identifierLabel:'PSN account credentials', identifierFormat:'Email + password + Online ID (no serial)',   iconHint:'default'}
+  'PS5-CONSOLE':        {supplyPrice:0, name:'PlayStation 5 Console',       role:'Primary', identifierType:'Serial_Number', identifierLabel:'Console serial number', identifierFormat:'17-char serial on the rear label, e.g. SN200000000000001',   iconHint:'console'},
+  'POWER-CABLE':        {supplyPrice:149, name:'Power Cable',                 role:'Accessory', identifierType:'QR_ID', identifierLabel:'Scan cable QR tag', identifierFormat:'SharePal QR sticker, e.g. SP-QR-000001', iconHint:'cable'},
+  'USB-TO-C-CABLE':     {supplyPrice:99, name:'USB-to-C Cable',              role:'Accessory', identifierType:'QR_ID', identifierLabel:'Scan cable QR tag', identifierFormat:'SharePal QR sticker, e.g. SP-QR-000001', iconHint:'cable'},
+  'PS5-CONTROLLER':     {supplyPrice:2499, name:'PS5 Controller (DualSense)',  role:'Accessory', identifierType:'Serial_Number', identifierLabel:'Controller serial number', identifierFormat:'Serial inside the battery bay, e.g. SN200000000000001', iconHint:'controller'},
+  'HDMI-TO-HDMI-CABLE': {supplyPrice:199, name:'HDMI-to-HDMI Cable',          role:'Accessory', identifierType:'QR_ID', identifierLabel:'Scan cable QR tag', identifierFormat:'SharePal QR sticker, e.g. SP-QR-000001', iconHint:'cable'},
+  'PS5-CONSOLE-CASE':   {supplyPrice:899, name:'PS5 Console Carry Case',      role:'Accessory', identifierType:'QR_ID', identifierLabel:'Scan case QR tag', identifierFormat:'SharePal QR sticker, e.g. SP-QR-000001', iconHint:'case'},
+  'GOPRO-HERO-13-CAMERA':  {supplyPrice:0, name:'GoPro Hero 13 Camera',       role:'Primary', identifierType:'Serial_Number', identifierLabel:'Camera serial number', identifierFormat:'Serial in the battery door, e.g. C3441234567890',   iconHint:'console'},
+  'GOPRO-HERO-13-BATTERY': {supplyPrice:999, name:'GoPro Hero 13 Battery',       role:'Accessory', identifierType:'Serial_Number', identifierLabel:'Battery serial number', identifierFormat:'Printed on the battery label', iconHint:'battery'},
+  'GOPRO-HERO-13-CHARGER': {supplyPrice:799, name:'GoPro Hero 13 Charger',       role:'Accessory', identifierType:'Serial_Number', identifierLabel:'Charger serial number', identifierFormat:'Printed on the charger underside', iconHint:'charger'},
+  'C-TO-C-CABLE':          {supplyPrice:149, name:'USB C-to-C Cable',            role:'Accessory', identifierType:'QR_ID', identifierLabel:'Scan cable QR tag', identifierFormat:'SharePal QR sticker, e.g. SP-QR-000001', iconHint:'cable'},
+  'GPRO-SELFIE-STK':       {supplyPrice:599, name:'GoPro Selfie Stick',          role:'Accessory', identifierType:'QR_ID', identifierLabel:'Scan mount QR tag', identifierFormat:'SharePal QR sticker, e.g. SP-QR-000001', iconHint:'selfie stick'},
+  'SANDISK-64GB-MICROSD':  {supplyPrice:449, name:'SanDisk 64GB MicroSD Card',   role:'Accessory', identifierType:'Serial_Number', identifierLabel:'Card serial number', identifierFormat:'Serial printed on the card face', iconHint:'card'},
+  'GPRO-BASE-MOUNT':       {supplyPrice:299, name:'GoPro Base Mount',            role:'Accessory', identifierType:'QR_ID', identifierLabel:'Scan mount QR tag', identifierFormat:'SharePal QR sticker, e.g. SP-QR-000001', iconHint:'mount'},
+  'GPRO-SCREW':            {supplyPrice:99, name:'GoPro Thumb Screw',           role:'Accessory', identifierType:'QR_ID', identifierLabel:'Scan fastener QR tag', identifierFormat:'SharePal QR sticker, e.g. SP-QR-000001', iconHint:'screw'},
+  'GOPRO-SILICON-COVER':   {supplyPrice:349, name:'GoPro Silicon Cover',         role:'Accessory', identifierType:'QR_ID', identifierLabel:'Scan cover QR tag', identifierFormat:'SharePal QR sticker, e.g. SP-QR-000001', iconHint:'case'},
+  'GOPRO-CASE-LARGE':      {supplyPrice:799, name:'GoPro Large Carry Case',      role:'Accessory', identifierType:'QR_ID', identifierLabel:'Scan case QR tag', identifierFormat:'SharePal QR sticker, e.g. SP-QR-000001', iconHint:'case'},
+  'GOPRO-CARRY-BAG':       {supplyPrice:399, name:'GoPro Carry Bag',             role:'Accessory', identifierType:'QR_ID', identifierLabel:'Scan bag QR tag', identifierFormat:'SharePal QR sticker, e.g. SP-QR-000001', iconHint:'carry bag'},
+  'GPRO-HELMET-MOUNT':     {supplyPrice:499, name:'GoPro Helmet Mount',          role:'Accessory', identifierType:'QR_ID', identifierLabel:'Scan mount QR tag', identifierFormat:'SharePal QR sticker, e.g. SP-QR-000001', iconHint:'mount'},
+  'GPRO-DIVE-CASE':        {supplyPrice:1499, name:'GoPro Dive Housing',          role:'Accessory', identifierType:'Serial_Number', identifierLabel:'Housing serial number', identifierFormat:'Serial moulded inside the housing door', iconHint:'case'},
+  'GPRO-FLOATY':           {supplyPrice:599, name:'GoPro Floaty Handle',         role:'Accessory', identifierType:'QR_ID', identifierLabel:'Scan grip QR tag', identifierFormat:'SharePal QR sticker, e.g. SP-QR-000001', iconHint:'mount'},
+  'GPRO-ANTI-FOG':         {supplyPrice:199, name:'Anti-Fog Inserts',            role:'Accessory', identifierType:'None', identifierLabel:'', identifierFormat:'', iconHint:'default'},
+  'PS-PLUS-MEMBERSHIP':    {supplyPrice:0, name:'PlayStation Plus Membership',  role:'Digital', identifierType:'Credentials', identifierLabel:'PSN account credentials', identifierFormat:'Email + password + Online ID (no serial)',   iconHint:'default'}
 };
 
 /* Product families — what the contributor physically owns */
@@ -1057,6 +1057,44 @@ let PRODUCT_ITEMS = {
 function getRentalProductsForFamily(familyKey){
   return Object.entries(RENTAL_PRODUCTS).filter(([,rp])=>rp.familyKey===familyKey).map(([id,rp])=>({...rp, rpId:id}));
 }
+/* What the contributor is missing, and what we'd charge to supply it.
+   Single source of truth: the packing-kit screen and the checkout cart both
+   read this, so they can never disagree about what is being bought.
+   Prices come per item from the items master — there is no flat rate. */
+function supplyPriceFor(itemId){
+  const m = ITEMS_MASTER[itemId];
+  const v = m && Number(m.supplyPrice);
+  return (isFinite(v) && v > 0) ? v : DESELECT_FALLBACK_PRICE;
+}
+function supplyShortfalls(l){
+  if(!l) return [];
+  const isUpgrade  = !!(l.isUpgrade && l.upgradeNewItems);
+  const deselected = isUpgrade ? (l.upgradeDeselected || []) : (l.deselectedAccessories || []);
+  const items      = isUpgrade ? (l.upgradeNewItems || []) : getRpAccessories(l.selectedRpId);
+  const out = [];
+  items.forEach(function(a){
+    if(a.role === 'Digital') return;          // an account cannot be shipped
+    const dName = a.displayName || a.name;
+    const need  = a.qty || a.needQty || 1;
+    let have;
+    if(deselected.indexOf(dName) > -1){
+      have = 0;                                // ticked "I don't have this"
+    } else if(l.reducedQty && l.reducedQty[a.itemId] !== undefined){
+      have = l.reducedQty[a.itemId];           // has some, not all
+    } else {
+      have = need;
+    }
+    const short = Math.max(0, need - have);
+    if(short > 0){
+      const unit = supplyPriceFor(a.itemId);
+      out.push({ itemId:a.itemId, name:dName, qty:short, unitPrice:unit, total:unit*short });
+    }
+  });
+  return out;
+}
+function supplyShortfallTotal(l){
+  return supplyShortfalls(l).reduce(function(sum,x){ return sum + x.total; }, 0);
+}
 function getRpAccessories(rpId){
   return (PRODUCT_ITEMS[rpId]||[]).map(pi=>{
     const m = ITEMS_MASTER[pi.itemId];
@@ -1147,7 +1185,9 @@ function logisticsFeeFor(familyKey){
   const fam = PRODUCT_FAMILIES[familyKey];
   return fam && fam.logisticsFee != null ? Number(fam.logisticsFee) : 0;
 }
-const DESELECT_FLAT_PRICE = 499;
+/* Fallback only — used when an item has no supply price in the items master.
+   Real pricing is per item via supplyPriceFor(). */
+const DESELECT_FALLBACK_PRICE = 499;
 
 const STATUS_META = {
   'items-pending':      {label:'Items check',                       badge:'badge-neutral', progress:10},
@@ -2549,7 +2589,7 @@ function renderListingItems(id){
     <div class="card card-pad mt-16" style="background:var(--warn-50);border:none;">
       <div class="flex gap-12">
         <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="var(--warn-600)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M12 9v4M12 17h.01M10.3 3.9L2.8 17a2 2 0 001.7 3h15a2 2 0 001.7-3l-7.5-13a2 2 0 00-3.4 0z"/></svg>
-        <p class="small" style="color:#9A5C02;"><b>Missing physical items noted.</b> We'll add them to your packing kit at ₹499 each.</p>
+        <p class="small" style="color:#9A5C02;"><b>Missing physical items noted.</b> We'll add them to your packing kit — you'll see the price for each at checkout.</p>
       </div>
     </div>` : ''}
     ${anyDigitalMissing ? `
@@ -2920,9 +2960,9 @@ function renderListingCheckout(id){
 
   const visibleFixed = p.kitFixed.filter(k=>!k.hidden);
   let cartRows = visibleFixed.map(k=>`<div class="flex justify-between items-center mb-12"><span class="small muted">${k.name}${k.qty ? ` (x${k.qty})` : ''}</span><span class="small tabular">₹${k.price.toLocaleString('en-IN')}</span></div>`).join('');
-  cartRows += l.deselectedAccessories.map(name=>`<div class="flex justify-between items-center mb-12"><span class="small muted">${name} <span class="badge badge-neutral" style="margin-left:6px;">we'll supply</span></span><span class="small tabular">₹${DESELECT_FLAT_PRICE}</span></div>`).join('');
+  cartRows += supplyShortfalls(l).map(sh=>`<div class="flex justify-between items-center mb-12"><span class="small muted">${sh.name}${sh.qty>1?` (x${sh.qty})`:''} <span class="badge badge-neutral" style="margin-left:6px;">we'll supply</span></span><span class="small tabular">₹${sh.total.toLocaleString('en-IN')}</span></div>`).join('');
   cartRows += `<div class="flex justify-between items-center mb-12"><span class="small muted">QR tracking stickers</span><span class="small tabular">Free</span></div>`;
-  const total = p.kitFixed.reduce((sum,k)=>sum+k.price,0) + l.deselectedAccessories.length*DESELECT_FLAT_PRICE;
+  const total = p.kitFixed.reduce((sum,k)=>sum+k.price,0) + supplyShortfallTotal(l);
   const isCod = l.paymentMethod === 'cod';
 
   document.getElementById('route-content').innerHTML = `
@@ -3018,25 +3058,34 @@ function renderListingAddition(id){
 
   // For upgrades, only new physical items need serial numbers. No kit items (already have kit).
   // Expand multi-qty items into individual entries
+  /* Deselected items are NOT dropped here: the contributor doesn't own them,
+     so we supply them — they still belong on this screen, as kit-supply. */
   const rawAssetItems = isUpgrade
-    ? l.upgradeNewItems.filter(ni=>ni.role!=='Digital' && !deselectedRef.includes(ni.name))
-    : rpItems.filter(a=>a.role !== 'Digital' && !deselectedRef.includes(a.displayName));
+    ? l.upgradeNewItems.filter(ni=>ni.role!=='Digital')
+    : rpItems.filter(a=>a.role !== 'Digital');
   const assetItems = [];
   rawAssetItems.forEach(a=>{
     const dName = a.displayName || a.name;
     const itemQty = a.qty || a.needQty || 1;
-    const actualQty = l.reducedQty && l.reducedQty[a.itemId] !== undefined ? l.reducedQty[a.itemId] : itemQty;
-    if(actualQty <= 0) return;
-    if(actualQty === 1){
+    let actualQty = l.reducedQty && l.reducedQty[a.itemId] !== undefined ? l.reducedQty[a.itemId] : itemQty;
+    if(deselectedRef.indexOf(dName) > -1) actualQty = 0;   // ticked as missing
+    /* Units the contributor owns. */
+    if(actualQty === 1 && itemQty === 1){
       assetItems.push({name: dName, kind: isUpgrade ? 'upgrade' : (a.primary ? 'primary' : 'accessory'), serialKey: dName});
     } else {
       for(var u = 1; u <= actualQty; u++){
         assetItems.push({name: dName + ' #' + u, kind: isUpgrade ? 'upgrade' : 'accessory', serialKey: dName + ' #' + u});
       }
-      // Items being supplied in kit
-      for(var u = actualQty + 1; u <= itemQty; u++){
-        assetItems.push({name: dName + ' #' + u, kind: 'kit-supply', serialKey: dName + ' #' + u});
-      }
+    }
+    /* Units we supply. Previously this only ran when the contributor owned 2+,
+       so an item they were completely missing never appeared for purchase. */
+    for(var u = actualQty + 1; u <= itemQty; u++){
+      assetItems.push({
+        name: itemQty === 1 ? dName : dName + ' #' + u,
+        kind: 'kit-supply',
+        serialKey: itemQty === 1 ? dName : dName + ' #' + u,
+        itemId: a.itemId
+      });
     }
   });
   const kitItems = isUpgrade ? [] : fam.kitFixed.filter(k=>!k.hidden && !k.consumable);
